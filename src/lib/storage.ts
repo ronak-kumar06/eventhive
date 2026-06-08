@@ -46,14 +46,53 @@ export class LocalStorageProvider implements StorageProvider {
   }
 }
 
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
+
 // AWS S3 Provider stub for later
 export class S3StorageProvider implements StorageProvider {
+  private s3: S3Client
+  private bucket: string
+
+  constructor() {
+    this.s3 = new S3Client({
+      region: process.env.AWS_REGION || "us-east-1",
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+      }
+    })
+    this.bucket = process.env.AWS_S3_BUCKET || ""
+  }
+
   async uploadFile(file: File | Blob, originalName: string, folder: string): Promise<string> {
-    throw new Error("S3 Upload not implemented yet")
+    if (!this.bucket) throw new Error("AWS_S3_BUCKET is not set")
+    
+    const ext = path.extname(originalName) || ""
+    const fileName = `${folder}/${uuidv4()}${ext}`
+    
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    await this.s3.send(new PutObjectCommand({
+      Bucket: this.bucket,
+      Key: fileName,
+      Body: buffer,
+      ContentType: file.type
+    }))
+
+    return `https://${this.bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
   }
   
   async deleteFile(url: string): Promise<void> {
-    throw new Error("S3 Delete not implemented yet")
+    if (!this.bucket) throw new Error("AWS_S3_BUCKET is not set")
+    
+    const key = url.split(".amazonaws.com/")[1]
+    if (!key) return
+
+    await this.s3.send(new DeleteObjectCommand({
+      Bucket: this.bucket,
+      Key: key
+    }))
   }
 }
 

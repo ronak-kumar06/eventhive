@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import { SocketProvider } from "@/components/providers/SocketProvider";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -26,11 +27,13 @@ export default function RootLayout({
         className={`${inter.variable} antialiased min-h-screen flex flex-col bg-[#050505] text-white`}
       >
         <AuthProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <SocketProvider>
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </SocketProvider>
         </AuthProvider>
       </body>
     </html>

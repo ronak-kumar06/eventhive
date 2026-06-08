@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma"
 import { auth } from "@/auth"
 import { revalidatePath } from "next/cache"
+import { sendNotification } from "@/lib/notify"
 
 export async function toggleLike(mediaId: string, pathToRevalidate: string) {
   try {
@@ -29,6 +30,15 @@ export async function toggleLike(mediaId: string, pathToRevalidate: string) {
           userId: session.user.id
         }
       })
+      
+      const media = await prisma.media.findUnique({ where: { id: mediaId }, select: { uploaderId: true } })
+      if (media && media.uploaderId !== session.user.id) {
+        await sendNotification('notification', {
+          userId: media.uploaderId,
+          message: `${session.user.name} liked your photo`,
+          type: 'like'
+        })
+      }
     }
 
     revalidatePath(pathToRevalidate)
@@ -86,6 +96,15 @@ export async function addComment(mediaId: string, content: string, pathToRevalid
         content: content.trim()
       }
     })
+
+    const media = await prisma.media.findUnique({ where: { id: mediaId }, select: { uploaderId: true } })
+    if (media && media.uploaderId !== session.user.id) {
+      await sendNotification('notification', {
+        userId: media.uploaderId,
+        message: `${session.user.name} commented on your photo`,
+        type: 'comment'
+      })
+    }
 
     revalidatePath(pathToRevalidate)
     return { success: true }
