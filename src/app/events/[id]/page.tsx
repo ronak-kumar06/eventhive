@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { auth } from "@/auth"
 import { Uploader } from "@/components/media/Uploader"
+import { MediaCard } from "@/components/media/MediaCard"
 import { format } from "date-fns"
 import { MapPin, Calendar, LayoutGrid, Image as ImageIcon } from "lucide-react"
 
@@ -13,7 +14,15 @@ export default async function EventDetailPage({ params }: { params: { id: string
     include: {
       creator: { select: { name: true } },
       media: {
-        orderBy: { createdAt: "desc" }
+        orderBy: { createdAt: "desc" },
+        include: {
+          likes: true,
+          favorites: true,
+          comments: {
+            include: { user: { select: { name: true, image: true } } },
+            orderBy: { createdAt: "asc" }
+          }
+        }
       }
     }
   })
@@ -107,19 +116,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             ) : (
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
                 {event.media.map((item) => (
-                  <div key={item.id} className="break-inside-avoid rounded-xl overflow-hidden bg-white/5 border border-white/10 group relative">
-                    {item.type === "IMAGE" ? (
-                      <img src={item.url} alt="Media" className="w-full h-auto object-cover group-hover:scale-105 transition duration-500" />
-                    ) : (
-                      <video src={item.url} className="w-full h-auto object-cover group-hover:scale-105 transition duration-500" controls />
-                    )}
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center backdrop-blur-sm">
-                      <a href={item.url} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-white text-black rounded-full text-sm font-medium hover:bg-white/90">
-                        View Full
-                      </a>
-                    </div>
-                  </div>
+                  <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} />
                 ))}
               </div>
             )}
