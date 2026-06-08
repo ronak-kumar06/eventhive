@@ -1,0 +1,82 @@
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import prisma from "@/lib/prisma"
+import { format } from "date-fns"
+import { auth } from "@/auth"
+
+export default async function EventsPage() {
+  const session = await auth()
+  
+  const events = await prisma.event.findMany({
+    orderBy: { date: "desc" },
+    include: {
+      creator: {
+        select: { name: true }
+      }
+    }
+  })
+
+  return (
+    <div className="min-h-screen pt-32 pb-12 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Explore Events</h1>
+            <p className="text-white/60">Discover the latest events and their media galleries.</p>
+          </div>
+          
+          {(session?.user?.role === "ADMIN" || session?.user?.role === "PHOTOGRAPHER") && (
+            <Link href="/events/create" className="mt-4 md:mt-0">
+              <Button className="bg-white text-black hover:bg-white/90">
+                Create Event
+              </Button>
+            </Link>
+          )}
+        </div>
+
+        {events.length === 0 ? (
+          <div className="text-center py-20 bg-white/5 border border-white/10 rounded-2xl">
+            <h3 className="text-xl font-medium mb-2">No events found</h3>
+            <p className="text-white/60">There are no upcoming events at the moment.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <Link key={event.id} href={`/events/${event.id}`}>
+                <div className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col">
+                  <div className="aspect-video bg-white/10 relative overflow-hidden">
+                    {event.coverImage ? (
+                      <img 
+                        src={event.coverImage} 
+                        alt={event.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500/20 to-purple-500/20">
+                        <span className="text-white/40 font-medium">No cover image</span>
+                      </div>
+                    )}
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+                      {event.category}
+                    </div>
+                  </div>
+                  
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-400 transition">{event.name}</h3>
+                    <p className="text-sm text-white/60 mb-4 line-clamp-2 flex-1">{event.description}</p>
+                    
+                    <div className="pt-4 border-t border-white/10 mt-auto flex items-center justify-between text-xs text-white/50">
+                      <span>{format(new Date(event.date), "MMM d, yyyy")}</span>
+                      <span>By {event.creator?.name || "Unknown"}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
