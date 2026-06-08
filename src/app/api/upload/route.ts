@@ -25,16 +25,49 @@ export async function POST(request: Request) {
 
     const storage = getStorageProvider()
     const uploadedMedia = []
+    
+    // Feature flag for AI Tagging
+    const useAITagging = process.env.ENABLE_AI_TAGGING === "true"
+    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:8000"
 
     for (const file of files) {
       const url = await storage.uploadFile(file, file.name, "media")
       
+      let aiTags: string[] = []
+      
+      if (useAITagging && file.type.startsWith("image")) {
+        try {
+          const aiFormData = new FormData()
+          aiFormData.append("file", file)
+          
+          const aiRes = await fetch(`${aiServiceUrl}/analyze-image`, {
+            method: "POST",
+            body: aiFormData
+          })
+          
+          if (aiRes.ok) {
+            const aiData = await aiRes.json()
+            if (aiData.tags) {
+              aiTags = aiData.tags
+            }
+          }
+        } catch (error) {
+          console.error("AI Tagging failed, skipping:", error)
+        }
+      }
+
       const media = await prisma.media.create({
         data: {
           url,
           type: file.type.startsWith("video") ? "VIDEO" : "IMAGE",
           uploaderId: session.user.id,
-          eventId: eventId || null
+          eventId: eventId || null,
+          tags: {
+            connectOrCreate: aiTags.map(t => ({
+              where: { name: t },
+              create: { name: t }
+            }))
+          }
         }
       })
       uploadedMedia.push(media)

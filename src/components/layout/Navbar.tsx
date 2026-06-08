@@ -28,6 +28,7 @@ export function Navbar() {
           <Link href="/events" className={`hover:text-white transition-colors ${pathname === '/events' ? 'text-white' : 'text-white/60'}`}>Events</Link>
           <Link href="/gallery" className={`hover:text-white transition-colors ${pathname === '/gallery' ? 'text-white' : 'text-white/60'}`}>Gallery</Link>
           <Link href="/search" className={`hover:text-white transition-colors ${pathname === '/search' ? 'text-white' : 'text-white/60'}`}>Search</Link>
+          <Link href="/my-photos" className={`hover:text-white transition-colors ${pathname === '/my-photos' ? 'text-white' : 'text-white/60'}`}>My Photos</Link>
           <Link href="/pricing" className={`hover:text-white transition-colors ${pathname === '/pricing' ? 'text-white' : 'text-white/60'}`}>Pricing</Link>
         </div>
 
