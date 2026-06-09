@@ -29,21 +29,31 @@ export function Uploader({ eventId }: UploaderProps) {
     }
   }
 
+  const MAX_FILE_SIZE = 4 * 1024 * 1024 // 4MB
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFiles = Array.from(e.dataTransfer.files)
-      setFiles((prev) => [...prev, ...droppedFiles])
+      const validFiles = droppedFiles.filter(f => f.size <= MAX_FILE_SIZE)
+      if (validFiles.length < droppedFiles.length) {
+        toast.error(`Some files were ignored because they exceed the 4MB limit.`)
+      }
+      setFiles((prev) => [...prev, ...validFiles])
     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files.length > 0) {
       const selectedFiles = Array.from(e.target.files)
-      setFiles((prev) => [...prev, ...selectedFiles])
+      const validFiles = selectedFiles.filter(f => f.size <= MAX_FILE_SIZE)
+      if (validFiles.length < selectedFiles.length) {
+        toast.error(`Some files were ignored because they exceed the 4MB limit.`)
+      }
+      setFiles((prev) => [...prev, ...validFiles])
     }
   }
 
@@ -73,12 +83,12 @@ export function Uploader({ eventId }: UploaderProps) {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
       ])
 
-      const formData = new FormData()
-      formData.append("eventId", eventId)
-
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        formData.append("file", file)
+        const singleFormData = new FormData()
+        singleFormData.append("eventId", eventId)
+        singleFormData.append("file", file)
+        
         setStatusText(`Analyzing image ${i + 1} of ${files.length}...`)
 
         let fileFacesData = "[]"
@@ -134,33 +144,25 @@ export function Uploader({ eventId }: UploaderProps) {
             console.warn(`Browser could not read image ${i}. Likely unsupported format like HEIC.`)
           }
         }
-        formData.append("facesData", fileFacesData)
-        formData.append("tagsData", tagsData)
-      }
+        singleFormData.append("facesData", fileFacesData)
+        singleFormData.append("tagsData", tagsData)
 
-      setStatusText("Uploading to cloud...")
-      
-      const progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) return 90
-          return prev + 10
+        setStatusText(`Uploading image ${i + 1} of ${files.length}...`)
+        setProgress(((i) / files.length) * 100)
+        
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: singleFormData,
         })
-      }, 300)
 
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-
-      clearInterval(progressInterval)
-
-      if (!res.ok) {
-        let errorMsg = "Upload failed"
-        try {
-          const data = await res.json()
-          if (data.error) errorMsg = data.error
-        } catch(e) {}
-        throw new Error(errorMsg)
+        if (!res.ok) {
+          let errorMsg = "Upload failed"
+          try {
+            const data = await res.json()
+            if (data.error) errorMsg = data.error
+          } catch(e) {}
+          throw new Error(errorMsg)
+        }
       }
 
       setProgress(100)
@@ -197,7 +199,7 @@ export function Uploader({ eventId }: UploaderProps) {
           className="hidden" 
         />
         <UploadCloud className="mx-auto w-12 h-12 text-foreground/50 mb-4" />
-        <p className="text-lg font-medium mb-1">Drag and drop files here</p>
+        <p className="text-lg font-medium mb-1">Drag and drop files here (Max 4MB each)</p>
         <p className="text-foreground/50 text-sm">Or click to select files from your computer</p>
       </div>
 
