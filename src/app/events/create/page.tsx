@@ -129,7 +129,7 @@ export default function CreateEventPage() {
               <Button type="button" variant="outline" onClick={() => router.back()} className="border-black/20 text-zinc-900 hover:bg-[#F9F8F6]/10">
                 Cancel
               </Button>
-              <Button type="submit" className="bg-indigo-600 text-white hover:bg-indigo-700" disabled={loading}>
+              <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90" disabled={loading}>
                 {loading ? "Creating..." : "Create Event"}
               </Button>
             </div>
