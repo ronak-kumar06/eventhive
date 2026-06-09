@@ -88,7 +88,8 @@ export class S3StorageProvider implements StorageProvider {
       ContentType: file.type
     }))
 
-    return `https://${this.bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
+    const region = process.env.AWS_REGION || "us-east-1"
+    return `https://${this.bucket}.s3.${region}.amazonaws.com/${fileName}`
   }
   
   async deleteFile(url: string): Promise<void> {
@@ -107,6 +108,6 @@ export class S3StorageProvider implements StorageProvider {
 // Factory to get the current provider
 export function getStorageProvider(): StorageProvider {
   // We can use env vars later to switch to S3
-  const useS3 = process.env.USE_S3 === "true"
+  const useS3 = process.env.USE_S3?.toLowerCase() === "true" || process.env.USE_S3 === "1"
   return useS3 ? new S3StorageProvider() : new LocalStorageProvider()
 }

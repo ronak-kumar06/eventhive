@@ -155,15 +155,20 @@ export function Uploader({ eventId }: UploaderProps) {
       clearInterval(progressInterval)
 
       if (!res.ok) {
-        throw new Error("Upload failed")
+        let errorMsg = "Upload failed"
+        try {
+          const data = await res.json()
+          if (data.error) errorMsg = data.error
+        } catch(e) {}
+        throw new Error(errorMsg)
       }
 
       setProgress(100)
       toast.success(`${files.length} files uploaded successfully!`)
       setFiles([])
       router.refresh()
-    } catch (error) {
-      toast.error("Failed to upload files.")
+    } catch (error: any) {
+      toast.error(error.message || "Failed to upload files.")
     } finally {
       setUploading(false)
       setProgress(0)
