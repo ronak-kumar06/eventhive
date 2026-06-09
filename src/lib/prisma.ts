@@ -1,10 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
-  return new PrismaClient({
-    // Add the DB URL here since it's not in the schema anymore (Prisma 7+)
-    datasourceUrl: process.env.DATABASE_URL,
-  })
+  return new PrismaClient()
 }
 
 declare const globalThis: {

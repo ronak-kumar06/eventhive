@@ -17,6 +17,7 @@ export async function POST(request: Request) {
 
     const formData = await request.formData()
     const files = formData.getAll("file") as File[]
+    const facesDataRaw = formData.getAll("facesData") as string[]
     const eventId = formData.get("eventId") as string | null
 
     if (!files || files.length === 0) {
@@ -25,51 +26,41 @@ export async function POST(request: Request) {
 
     const storage = getStorageProvider()
     const uploadedMedia = []
-    
-    // Feature flag for AI Tagging
-    const useAITagging = process.env.ENABLE_AI_TAGGING === "true"
-    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:8000"
 
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
       const url = await storage.uploadFile(file, file.name, "media")
       
-      let aiTags: string[] = []
-      
-      if (useAITagging && file.type.startsWith("image")) {
-        try {
-          const aiFormData = new FormData()
-          aiFormData.append("file", file)
-          
-          const aiRes = await fetch(`${aiServiceUrl}/analyze-image`, {
-            method: "POST",
-            body: aiFormData
-          })
-          
-          if (aiRes.ok) {
-            const aiData = await aiRes.json()
-            if (aiData.tags) {
-              aiTags = aiData.tags
-            }
-          }
-        } catch (error) {
-          console.error("AI Tagging failed, skipping:", error)
-        }
-      }
-
       const media = await prisma.media.create({
         data: {
           url,
           type: file.type.startsWith("video") ? "VIDEO" : "IMAGE",
           uploaderId: session.user.id,
-          eventId: eventId || null,
-          tags: {
-            connectOrCreate: aiTags.map(t => ({
-              where: { name: t },
-              create: { name: t }
-            }))
-          }
+          eventId: eventId || null
         }
       })
+      
+      // If client provided face embeddings, save them to standard Float[]
+      if (facesDataRaw[i]) {
+        try {
+          const embeddingsList = JSON.parse(facesDataRaw[i]) as number[][]
+          if (Array.isArray(embeddingsList) && embeddingsList.length > 0) {
+            for (const embedding of embeddingsList) {
+              if (embedding.length === 128) {
+                await prisma.mediaFace.create({
+                  data: {
+                    mediaId: media.id,
+                    embedding: embedding
+                  }
+                })
+              }
+            }
+          }
+        } catch (e) {
+          console.error("Failed to parse facesData for file", i, e)
+        }
+      }
+
       uploadedMedia.push(media)
     }
 

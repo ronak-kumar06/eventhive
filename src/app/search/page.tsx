@@ -17,11 +17,22 @@ export default async function SearchPage({
     // Basic Phase 2 Search: match event name, category, or tags
     media = await prisma.media.findMany({
       where: {
-        OR: [
-          { event: { name: { contains: query, mode: "insensitive" } } },
-          { event: { category: { contains: query, mode: "insensitive" } } },
-          { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
-          { uploader: { name: { contains: query, mode: "insensitive" } } }
+        AND: [
+          {
+            OR: [
+              { event: { name: { contains: query, mode: "insensitive" } } },
+              { event: { category: { contains: query, mode: "insensitive" } } },
+              { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
+              { uploader: { name: { contains: query, mode: "insensitive" } } }
+            ]
+          },
+          {
+            OR: [
+              { event: { isPublic: true } },
+              session?.user?.role === "ADMIN" ? {} : { event: { creatorId: session?.user?.id || "" } },
+              { eventId: null }
+            ]
+          }
         ]
       },
       include: {

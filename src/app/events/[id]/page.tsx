@@ -3,14 +3,16 @@ import { notFound } from "next/navigation"
 import { auth } from "@/auth"
 import { Uploader } from "@/components/media/Uploader"
 import { MediaCard } from "@/components/media/MediaCard"
+import { DeleteEventButton } from "@/components/events/DeleteEventButton"
 import { format } from "date-fns"
 import { MapPin, Calendar, LayoutGrid, Image as ImageIcon } from "lucide-react"
 
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const session = await auth()
   
   const event = await prisma.event.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       creator: { select: { name: true } },
       media: {
@@ -30,19 +32,32 @@ export default async function EventDetailPage({ params }: { params: { id: string
   if (!event) return notFound()
 
   const canUpload = session?.user?.role === "ADMIN" || session?.user?.role === "PHOTOGRAPHER"
+  const isCreatorOrAdmin = session?.user?.id === event.creatorId || session?.user?.role === "ADMIN"
+
+  // Security check: Only allow access to private events if user is creator or admin
+  if (!event.isPublic && !isCreatorOrAdmin) {
+    return (
+      <div className="min-h-screen pt-32 pb-12 px-6 flex items-center justify-center bg-[#050505]">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-white mb-4">Private Event</h1>
+          <p className="text-white/60">You do not have permission to view this event's details or media.</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Get a random cover from the public/covers folder
+  const randomCoverId = Math.floor(Math.random() * 5) + 1;
+  const displayCover = event.coverImage || `/covers/${randomCoverId}.jpg`;
 
   return (
     <div className="min-h-screen pt-32 pb-12 px-6 bg-[#050505]">
       <div className="max-w-7xl mx-auto">
         {/* Event Header */}
-        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-white/5 backdrop-blur-sm group">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" />
-          {event.coverImage ? (
-            <img src={event.coverImage} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
-          ) : (
-            <div className="w-full h-64 md:h-96 bg-gradient-to-tr from-indigo-900 to-purple-900" />
-          )}
-          
+          <img src={displayCover} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
+
           <div className="absolute bottom-0 left-0 p-8 z-20 w-full flex flex-col md:flex-row justify-between items-end">
             <div>
               <div className="flex items-center space-x-3 mb-3">
@@ -66,7 +81,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
           <div className="space-y-6">
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
               <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-4">Event Details</h3>
-              <div className="space-y-4 text-sm text-white/70">
+              <div className="space-y-4 text-sm text-white/70 mb-6">
                 <div className="flex items-start space-x-3">
                   <Calendar className="w-5 h-5 text-indigo-400 mt-0.5" />
                   <div>
@@ -89,6 +104,12 @@ export default async function EventDetailPage({ params }: { params: { id: string
                   </div>
                 </div>
               </div>
+              
+              {isCreatorOrAdmin && (
+                <div className="pt-4 border-t border-white/10 flex justify-center">
+                  <DeleteEventButton eventId={event.id} />
+                </div>
+              )}
             </div>
 
             {canUpload && (
@@ -116,7 +137,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             ) : (
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
                 {event.media.map((item) => (
-                  <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} />
+                  <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} isEventCreator={isCreatorOrAdmin} />
                 ))}
               </div>
             )}

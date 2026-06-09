@@ -22,7 +22,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-white">Product</h3>
             <ul className="space-y-2 text-sm text-white/60">
-              <li><Link href="/features" className="hover:text-white transition">Features</Link></li>
+              <li><span className="opacity-50 cursor-not-allowed">Features</span></li>
               <li><Link href="/pricing" className="hover:text-white transition">Pricing</Link></li>
               <li><Link href="/gallery" className="hover:text-white transition">Gallery</Link></li>
             </ul>
@@ -31,17 +31,17 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-white">Resources</h3>
             <ul className="space-y-2 text-sm text-white/60">
-              <li><Link href="/docs" className="hover:text-white transition">Documentation</Link></li>
-              <li><Link href="/help" className="hover:text-white transition">Help Center</Link></li>
-              <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
+              <li><span className="opacity-50 cursor-not-allowed">Documentation</span></li>
+              <li><span className="opacity-50 cursor-not-allowed">Help Center</span></li>
+              <li><span className="opacity-50 cursor-not-allowed">Blog</span></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4 text-white">Legal</h3>
             <ul className="space-y-2 text-sm text-white/60">
-              <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition">Terms of Service</Link></li>
+              <li><span className="opacity-50 cursor-not-allowed">Privacy Policy</span></li>
+              <li><span className="opacity-50 cursor-not-allowed">Terms of Service</span></li>
             </ul>
           </div>
         </div>
@@ -49,9 +49,9 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
           <p>© {new Date().getFullYear()} EventSphere AI. All rights reserved.</p>
           <div className="flex space-x-4">
-            <Link href="#" className="hover:text-white transition">Twitter</Link>
-            <Link href="#" className="hover:text-white transition">GitHub</Link>
-            <Link href="#" className="hover:text-white transition">Discord</Link>
+            <span className="opacity-50 cursor-not-allowed">Twitter</span>
+            <span className="opacity-50 cursor-not-allowed">GitHub</span>
+            <span className="opacity-50 cursor-not-allowed">Discord</span>
           </div>
         </div>
       </div>

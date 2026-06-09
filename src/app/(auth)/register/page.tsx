@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { registerUser } from "./action"
+import { loginUser } from "../login/action"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -26,14 +27,20 @@ export default function RegisterPage() {
 
       if (res.error) {
         toast.error(res.error)
+        setLoading(false)
       } else {
-        toast.success("Account created successfully. Please sign in.")
-        router.push("/login")
+        toast.success("Account created successfully. Logging you in...")
+        
+        // Auto-login
+        const formData = new FormData()
+        formData.append("email", email)
+        formData.append("password", password)
+        await loginUser(formData)
+        // Note: loginUser throws redirect error upon success
       }
     } catch (error) {
-      toast.error("Something went wrong")
-    } finally {
-      setLoading(false)
+      // loginUser throws the redirect error, let it propagate!
+      throw error;
     }
   }
 

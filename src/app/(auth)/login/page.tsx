@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -9,35 +8,29 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { loginUser } from "./action"
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      })
+      const formData = new FormData(e.currentTarget)
+      const res = await loginUser(formData)
 
       if (res?.error) {
-        toast.error("Invalid credentials")
+        toast.error(res.error)
+        setLoading(false)
       } else {
         toast.success("Logged in successfully")
-        router.push("/dashboard")
-        router.refresh()
       }
     } catch (error) {
-      toast.error("Something went wrong")
-    } finally {
-      setLoading(false)
+      // Re-throw so Next.js router can intercept the redirect!
+      throw error;
     }
   }
 
@@ -67,10 +60,9 @@ export default function LoginPage() {
             <Label htmlFor="email">Email</Label>
             <Input 
               id="email" 
+              name="email"
               type="email" 
               placeholder="you@example.com" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required 
               className="bg-black/20 border-white/10"
             />
@@ -82,9 +74,8 @@ export default function LoginPage() {
             </div>
             <Input 
               id="password" 
+              name="password"
               type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required 
               className="bg-black/20 border-white/10"
             />

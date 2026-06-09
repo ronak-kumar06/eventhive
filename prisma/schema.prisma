@@ -9,7 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
 }
 
 enum Role {
@@ -32,7 +33,7 @@ model User {
   image         String?
   password      String?
   role          Role      @default(VIEWER)
-  faceEmbedding Float[]   // Stored as an array of floats if supported, or JSON/String
+  faceEmbedding Float[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -142,6 +143,7 @@ model Media {
   comments       Comment[]
   likes          Like[]
   favorites      Favorite[]
+  faces          MediaFace[]
 }
 
 model Tag {
@@ -191,4 +193,15 @@ model Favorite {
   createdAt DateTime @default(now())
 
   @@unique([mediaId, userId])
+}
+
+model MediaFace {
+  id        String   @id @default(cuid())
+  
+  mediaId   String
+  media     Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  
+  embedding Float[]
+
+  createdAt DateTime @default(now())
 }

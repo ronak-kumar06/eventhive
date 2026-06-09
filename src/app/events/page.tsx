@@ -9,6 +9,12 @@ export default async function EventsPage() {
   const session = await auth()
   
   const events = await prisma.event.findMany({
+    where: {
+      OR: [
+        { isPublic: true },
+        session?.user?.role === "ADMIN" ? {} : { creatorId: session?.user?.id || "" }
+      ]
+    },
     orderBy: { date: "desc" },
     include: {
       creator: {
@@ -42,24 +48,22 @@ export default async function EventsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
-              <Link key={event.id} href={`/events/${event.id}`}>
-                <div className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col">
-                  <div className="aspect-video bg-white/10 relative overflow-hidden">
-                    {event.coverImage ? (
+            {events.map((event) => {
+              const randomCoverId = Math.floor(Math.random() * 5) + 1;
+              const displayCover = event.coverImage || `/covers/${randomCoverId}.jpg`;
+              
+              return (
+                <Link key={event.id} href={`/events/${event.id}`}>
+                  <div className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col">
+                    <div className="aspect-video bg-white/10 relative overflow-hidden">
                       <img 
-                        src={event.coverImage} 
+                        src={displayCover} 
                         alt={event.name} 
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500/20 to-purple-500/20">
-                        <span className="text-white/40 font-medium">No cover image</span>
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+                        {event.category}
                       </div>
-                    )}
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
-                      {event.category}
-                    </div>
                   </div>
                   
                   <div className="p-6 flex-1 flex flex-col">
@@ -72,8 +76,9 @@ export default async function EventsPage() {
                     </div>
                   </div>
                 </div>
-              </Link>
-            ))}
+                </Link>
+              )
+            })}
           </div>
         )}
       </div>

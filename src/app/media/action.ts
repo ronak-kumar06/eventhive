@@ -112,3 +112,33 @@ export async function addComment(mediaId: string, content: string, pathToRevalid
     return { error: "Failed to add comment" }
   }
 }
+
+export async function deleteMedia(mediaId: string, pathToRevalidate: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) return { error: "Unauthorized" }
+
+    const media = await prisma.media.findUnique({ 
+      where: { id: mediaId },
+      include: { event: true } 
+    })
+    
+    if (!media) return { error: "Media not found" }
+
+    const isUploader = media.uploaderId === session.user.id
+    const isEventCreator = media.event?.creatorId === session.user.id
+    const isAdmin = session.user.role === "ADMIN"
+
+    if (!isUploader && !isEventCreator && !isAdmin) {
+      return { error: "Insufficient permissions to delete media" }
+    }
+
+    await prisma.media.delete({ where: { id: mediaId } })
+    
+    revalidatePath(pathToRevalidate)
+    return { success: true }
+  } catch (error) {
+    console.error("Delete media error:", error)
+    return { error: "Failed to delete media" }
+  }
+}

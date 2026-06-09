@@ -15,6 +15,7 @@ export function Uploader({ eventId }: UploaderProps) {
   const [files, setFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [statusText, setStatusText] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -54,16 +55,67 @@ export function Uploader({ eventId }: UploaderProps) {
     if (files.length === 0) return
     setUploading(true)
     setProgress(0)
+    setStatusText("Loading AI Models...")
 
     try {
+      const faceapi = await import("@vladmandic/face-api")
+      const MODEL_URL = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/"
+      await Promise.all([
+        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL), // Use highly accurate model
+        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+      ])
+
       const formData = new FormData()
       formData.append("eventId", eventId)
-      files.forEach((file) => {
-        formData.append("file", file)
-      })
 
-      // We'll use a simple fetch since Next.js route handlers don't give exact XHR progress out of the box easily without custom XHR
-      // but for this MVP, fetch is fine. We simulate progress.
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        formData.append("file", file)
+        setStatusText(`Analyzing image ${i + 1} of ${files.length}...`)
+
+        let fileFacesData = "[]"
+        if (file.type.startsWith("image/")) {
+          const img = new Image()
+          img.src = URL.createObjectURL(file)
+          await new Promise((resolve, reject) => { 
+            img.onload = resolve 
+            img.onerror = () => resolve(null) // Resolve anyway to not break loop
+          })
+
+          // Skip if the browser couldn't parse the image (e.g. HEIC files)
+          if (img.naturalWidth > 0 && img.complete) {
+            // Convert to Canvas to completely avoid tfjs Dimensions error
+            const canvas = document.createElement("canvas")
+            const w = img.naturalWidth || 1000
+            const h = img.naturalHeight || 1000
+            canvas.width = w
+            canvas.height = h
+            const ctx = canvas.getContext("2d")
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, w, h)
+            }
+
+            // Use SsdMobilenetv1 (the default and most accurate detector in face-api)
+            const detections = await faceapi.detectAllFaces(canvas)
+                                            .withFaceLandmarks()
+                                            .withFaceDescriptors()
+            
+            if (detections && detections.length > 0) {
+              const arrays = detections.map(d => Array.from(d.descriptor))
+              fileFacesData = JSON.stringify(arrays)
+              console.log(`Found ${detections.length} faces in image ${i}`)
+            } else {
+              console.warn(`No faces found in image ${i}`)
+            }
+          } else {
+            console.warn(`Browser could not read image ${i}. Likely unsupported format like HEIC.`)
+          }
+        }
+        formData.append("facesData", fileFacesData)
+      }
+
+      setStatusText("Uploading to cloud...")
       
       const progressInterval = setInterval(() => {
         setProgress((prev) => {
@@ -92,6 +144,7 @@ export function Uploader({ eventId }: UploaderProps) {
     } finally {
       setUploading(false)
       setProgress(0)
+      setStatusText("")
     }
   }
 
@@ -154,7 +207,7 @@ export function Uploader({ eventId }: UploaderProps) {
               {uploading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Uploading...
+                  {statusText || "Uploading..."}
                 </>
               ) : (
                 `Upload ${files.length} file${files.length > 1 ? 's' : ''}`

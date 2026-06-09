@@ -21,6 +21,8 @@ export async function createEvent(formData: FormData) {
     const dateStr = formData.get("date") as string
     const category = formData.get("category") as string
     const location = formData.get("location") as string
+    const visibility = formData.get("visibility") as string
+    const isPublic = visibility !== "private"
 
     if (!name || !dateStr || !category) {
       return { error: "Missing required fields" }
@@ -33,6 +35,7 @@ export async function createEvent(formData: FormData) {
         date: new Date(dateStr),
         category,
         location,
+        isPublic,
         creatorId: session.user.id
       }
     })
@@ -43,5 +46,28 @@ export async function createEvent(formData: FormData) {
   } catch (error) {
     console.error("Create event error:", error)
     return { error: "Failed to create event" }
+  }
+}
+
+export async function deleteEvent(eventId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) return { error: "Unauthorized" }
+
+    const event = await prisma.event.findUnique({ where: { id: eventId } })
+    if (!event) return { error: "Event not found" }
+
+    if (session.user.role !== "ADMIN" && event.creatorId !== session.user.id) {
+      return { error: "Insufficient permissions to delete event" }
+    }
+
+    // Delete the event (cascade will delete related media in DB)
+    await prisma.event.delete({ where: { id: eventId } })
+    
+    revalidatePath("/events")
+    return { success: true }
+  } catch (error) {
+    console.error("Delete event error:", error)
+    return { error: "Failed to delete event" }
   }
 }

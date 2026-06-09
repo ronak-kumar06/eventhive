@@ -113,6 +113,18 @@ export default function CreateEventPage() {
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="visibility">Visibility</Label>
+              <select 
+                id="visibility" 
+                name="visibility"
+                className="flex h-10 w-full rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="public" className="bg-[#111]">Public (Visible to everyone)</option>
+                <option value="private" className="bg-[#111]">Private (Only visible to you until shared)</option>
+              </select>
+            </div>
+
             <div className="pt-4 border-t border-white/10 flex justify-end space-x-4">
               <Button type="button" variant="outline" onClick={() => router.back()} className="border-white/20 text-white hover:bg-white/10">
                 Cancel
