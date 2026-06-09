@@ -29,12 +29,12 @@ export default async function EventsPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
             <h1 className="text-4xl font-bold mb-2">Explore Events</h1>
-            <p className="text-white/60">Discover the latest events and their media galleries.</p>
+            <p className="text-zinc-600">Discover the latest events and their media galleries.</p>
           </div>
           
           {(session?.user?.role === "ADMIN" || session?.user?.role === "PHOTOGRAPHER") && (
             <Link href="/events/create" className="mt-4 md:mt-0">
-              <Button className="bg-white text-black hover:bg-white/90">
+              <Button className="bg-white text-white hover:bg-white/90">
                 Create Event
               </Button>
             </Link>
@@ -42,9 +42,9 @@ export default async function EventsPage() {
         </div>
 
         {events.length === 0 ? (
-          <div className="text-center py-20 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="text-center py-20 bg-[#F9F8F6]/5 border border-black/10 rounded-2xl">
             <h3 className="text-xl font-medium mb-2">No events found</h3>
-            <p className="text-white/60">There are no upcoming events at the moment.</p>
+            <p className="text-zinc-600">There are no upcoming events at the moment.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -54,23 +54,23 @@ export default async function EventsPage() {
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>
-                  <div className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col">
-                    <div className="aspect-video bg-white/10 relative overflow-hidden">
+                  <div className="group bg-[#F9F8F6]/5 border border-black/10 rounded-2xl overflow-hidden hover:border-black/20 transition backdrop-blur-sm h-full flex flex-col">
+                    <div className="aspect-video bg-[#F9F8F6]/10 relative overflow-hidden">
                       <img 
                         src={displayCover} 
                         alt={event.name} 
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
-                      <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-xs font-medium border border-black/10">
                         {event.category}
                       </div>
                   </div>
                   
                   <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-400 transition">{event.name}</h3>
-                    <p className="text-sm text-white/60 mb-4 line-clamp-2 flex-1">{event.description}</p>
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-[#8FAD88] transition">{event.name}</h3>
+                    <p className="text-sm text-zinc-600 mb-4 line-clamp-2 flex-1">{event.description}</p>
                     
-                    <div className="pt-4 border-t border-white/10 mt-auto flex items-center justify-between text-xs text-white/50">
+                    <div className="pt-4 border-t border-black/10 mt-auto flex items-center justify-between text-xs text-zinc-900/50">
                       <span>{format(new Date(event.date), "MMM d, yyyy")}</span>
                       <span>By {event.creator?.name || "Unknown"}</span>
                     </div>

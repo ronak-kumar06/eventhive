@@ -152,7 +152,7 @@ export function Uploader({ eventId }: UploaderProps) {
     <div className="w-full">
       <div 
         className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${
-          dragActive ? "border-indigo-500 bg-indigo-500/10" : "border-white/20 bg-white/5 hover:bg-white/10"
+          dragActive ? "border-indigo-500 bg-indigo-500/10" : "border-black/20 bg-[#F9F8F6]/5 hover:bg-[#F9F8F6]/10"
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -168,21 +168,21 @@ export function Uploader({ eventId }: UploaderProps) {
           onChange={handleChange} 
           className="hidden" 
         />
-        <UploadCloud className="mx-auto w-12 h-12 text-white/50 mb-4" />
+        <UploadCloud className="mx-auto w-12 h-12 text-zinc-900/50 mb-4" />
         <p className="text-lg font-medium mb-1">Drag and drop files here</p>
-        <p className="text-white/50 text-sm">Or click to select files from your computer</p>
+        <p className="text-zinc-900/50 text-sm">Or click to select files from your computer</p>
       </div>
 
       {files.length > 0 && (
         <div className="mt-6">
-          <h4 className="text-sm font-medium mb-3 text-white/80">Selected Files ({files.length})</h4>
+          <h4 className="text-sm font-medium mb-3 text-zinc-800">Selected Files ({files.length})</h4>
           <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
             {files.map((file, index) => (
-              <div key={index} className="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-white/10">
-                <div className="truncate flex-1 text-sm text-white/80">
+              <div key={index} className="flex items-center justify-between bg-[#F9F8F6]/40 p-3 rounded-lg border border-black/10">
+                <div className="truncate flex-1 text-sm text-zinc-800">
                   {file.name}
                 </div>
-                <button onClick={() => removeFile(index)} className="text-white/40 hover:text-red-400 p-1">
+                <button onClick={() => removeFile(index)} className="text-zinc-500 hover:text-red-400 p-1">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -191,7 +191,7 @@ export function Uploader({ eventId }: UploaderProps) {
           
           <div className="mt-4">
             {uploading && (
-              <div className="w-full bg-black/40 rounded-full h-2 mb-4 overflow-hidden">
+              <div className="w-full bg-[#F9F8F6]/40 rounded-full h-2 mb-4 overflow-hidden">
                 <div 
                   className="bg-indigo-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
@@ -202,7 +202,7 @@ export function Uploader({ eventId }: UploaderProps) {
             <Button 
               onClick={handleUpload} 
               disabled={uploading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-zinc-900"
             >
               {uploading ? (
                 <>

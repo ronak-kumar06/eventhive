@@ -40,13 +40,13 @@ export default function CreateEventPage() {
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Create New Event</h1>
-          <p className="text-white/60">Fill in the details below to set up a new event and media gallery.</p>
+          <p className="text-zinc-600">Fill in the details below to set up a new event and media gallery.</p>
         </div>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl"
+          className="bg-[#F9F8F6]/5 border border-black/10 p-8 rounded-2xl backdrop-blur-xl"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
@@ -56,7 +56,7 @@ export default function CreateEventPage() {
                 name="name"
                 placeholder="E.g., Annual Tech Fest 2026" 
                 required 
-                className="bg-black/20 border-white/10"
+                className="bg-[#F9F8F6]/50 border-black/10"
               />
             </div>
             
@@ -66,7 +66,7 @@ export default function CreateEventPage() {
                 id="description" 
                 name="description"
                 rows={4}
-                className="w-full rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-md border border-black/10 bg-[#F9F8F6]/50 px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 placeholder="Describe the event..." 
               />
             </div>
@@ -79,7 +79,7 @@ export default function CreateEventPage() {
                   name="date"
                   type="date" 
                   required 
-                  className="bg-black/20 border-white/10"
+                  className="bg-[#F9F8F6]/50 border-black/10"
                 />
               </div>
 
@@ -89,16 +89,16 @@ export default function CreateEventPage() {
                   id="category" 
                   name="category"
                   required
-                  className="flex h-10 w-full rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-full rounded-md border border-black/10 bg-[#F9F8F6]/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <option value="" disabled className="bg-[#111]">Select Category</option>
-                  <option value="Workshop" className="bg-[#111]">Workshop</option>
-                  <option value="Photoshoot" className="bg-[#111]">Photoshoot</option>
-                  <option value="Trip" className="bg-[#111]">Trip</option>
-                  <option value="Competition" className="bg-[#111]">Competition</option>
-                  <option value="Cultural Fest" className="bg-[#111]">Cultural Fest</option>
-                  <option value="Party" className="bg-[#111]">Party</option>
-                  <option value="Other" className="bg-[#111]">Other</option>
+                  <option value="" disabled className="bg-[#F3EFE9]">Select Category</option>
+                  <option value="Workshop" className="bg-[#F3EFE9]">Workshop</option>
+                  <option value="Photoshoot" className="bg-[#F3EFE9]">Photoshoot</option>
+                  <option value="Trip" className="bg-[#F3EFE9]">Trip</option>
+                  <option value="Competition" className="bg-[#F3EFE9]">Competition</option>
+                  <option value="Cultural Fest" className="bg-[#F3EFE9]">Cultural Fest</option>
+                  <option value="Party" className="bg-[#F3EFE9]">Party</option>
+                  <option value="Other" className="bg-[#F3EFE9]">Other</option>
                 </select>
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function CreateEventPage() {
                 id="location" 
                 name="location"
                 placeholder="E.g., Main Auditorium" 
-                className="bg-black/20 border-white/10"
+                className="bg-[#F9F8F6]/50 border-black/10"
               />
             </div>
 
@@ -118,18 +118,18 @@ export default function CreateEventPage() {
               <select 
                 id="visibility" 
                 name="visibility"
-                className="flex h-10 w-full rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 w-full rounded-md border border-black/10 bg-[#F9F8F6]/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value="public" className="bg-[#111]">Public (Visible to everyone)</option>
-                <option value="private" className="bg-[#111]">Private (Only visible to you until shared)</option>
+                <option value="public" className="bg-[#F3EFE9]">Public (Visible to everyone)</option>
+                <option value="private" className="bg-[#F3EFE9]">Private (Only visible to you until shared)</option>
               </select>
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex justify-end space-x-4">
-              <Button type="button" variant="outline" onClick={() => router.back()} className="border-white/20 text-white hover:bg-white/10">
+            <div className="pt-4 border-t border-black/10 flex justify-end space-x-4">
+              <Button type="button" variant="outline" onClick={() => router.back()} className="border-black/20 text-zinc-900 hover:bg-[#F9F8F6]/10">
                 Cancel
               </Button>
-              <Button type="submit" className="bg-white text-black hover:bg-white/90" disabled={loading}>
+              <Button type="submit" className="bg-white text-white hover:bg-white/90" disabled={loading}>
                 {loading ? "Creating..." : "Create Event"}
               </Button>
             </div>

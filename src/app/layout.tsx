@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} antialiased min-h-screen flex flex-col bg-[#050505] text-white`}
+        className={`${inter.variable} antialiased min-h-screen flex flex-col bg-[#F9F8F6] text-zinc-900`}
       >
         <AuthProvider>
           <SocketProvider>

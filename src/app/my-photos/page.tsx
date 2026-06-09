@@ -129,33 +129,33 @@ export default function MyPhotosPage() {
 
   if (fetchingMatches) {
     return (
-      <div className="min-h-screen pt-32 pb-12 flex items-center justify-center bg-[#050505]">
-        <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
+      <div className="min-h-screen pt-32 pb-12 flex items-center justify-center bg-[#F9F8F6]">
+        <Loader2 className="w-12 h-12 text-[#8FAD88] animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#050505]">
+    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#F9F8F6]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">My Photos (AI Match)</h1>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="text-zinc-600 max-w-2xl mx-auto">
             Upload a clear selfie. Our AI runs directly in your browser to scan your face and securely find all event photos you appear in.
           </p>
         </div>
 
         {!hasFaceRegistered ? (
-          <div className="bg-white/5 border border-white/10 p-8 rounded-3xl max-w-xl mx-auto backdrop-blur-md">
+          <div className="bg-[#F9F8F6]/5 border border-black/10 p-8 rounded-3xl max-w-xl mx-auto backdrop-blur-md">
             <div className="text-center mb-8">
               <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto mb-4">
-                <ScanFace className="w-8 h-8 text-indigo-400" />
+                <ScanFace className="w-8 h-8 text-[#8FAD88]" />
               </div>
               <h3 className="text-xl font-bold">Register your face</h3>
             </div>
 
             <div 
-              className="border-2 border-dashed border-white/20 rounded-2xl p-6 text-center cursor-pointer hover:bg-white/5 transition mb-6"
+              className="border-2 border-dashed border-black/20 rounded-2xl p-6 text-center cursor-pointer hover:bg-[#F9F8F6]/5 transition mb-6"
               onClick={() => inputRef.current?.click()}
             >
               <input 
@@ -167,20 +167,20 @@ export default function MyPhotosPage() {
               />
               
               {previewUrl ? (
-                <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-indigo-500/30 bg-black/50">
+                <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-indigo-500/30 bg-white/80">
                   <img ref={imageRef} src={previewUrl} className="w-full h-full object-cover" alt="Selfie preview" />
                 </div>
               ) : (
                 <div className="py-8">
-                  <Camera className="w-10 h-10 text-white/30 mx-auto mb-3" />
-                  <p className="font-medium text-white/80">Tap to upload a selfie</p>
-                  <p className="text-xs text-white/40 mt-1">Make sure your face is clearly visible</p>
+                  <Camera className="w-10 h-10 text-zinc-900/30 mx-auto mb-3" />
+                  <p className="font-medium text-zinc-800">Tap to upload a selfie</p>
+                  <p className="text-xs text-zinc-500 mt-1">Make sure your face is clearly visible</p>
                 </div>
               )}
             </div>
 
             <Button 
-              className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-lg font-medium"
+              className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-zinc-900 rounded-full text-lg font-medium"
               disabled={!file || loading || !modelsLoaded}
               onClick={handleScan}
             >
@@ -195,21 +195,21 @@ export default function MyPhotosPage() {
           </div>
         ) : (
           <div>
-            <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+            <div className="flex items-center justify-between mb-8 border-b border-black/10 pb-4">
               <h2 className="text-2xl font-bold flex items-center">
-                <LayoutGrid className="w-6 h-6 mr-3 text-indigo-400" /> 
+                <LayoutGrid className="w-6 h-6 mr-3 text-[#8FAD88]" /> 
                 Matches Found ({matches.length})
               </h2>
-              <Button variant="outline" onClick={() => setHasFaceRegistered(false)} className="border-white/20">
+              <Button variant="outline" onClick={() => setHasFaceRegistered(false)} className="border-black/20">
                 Update Selfie
               </Button>
             </div>
             
             {matches.length === 0 ? (
-              <div className="py-20 text-center border border-white/10 rounded-2xl bg-white/5">
-                <ScanFace className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <div className="py-20 text-center border border-black/10 rounded-2xl bg-[#F9F8F6]/5">
+                <ScanFace className="w-12 h-12 text-zinc-900/20 mx-auto mb-4" />
                 <h3 className="text-xl font-medium">No photos found yet!</h3>
-                <p className="text-sm text-white/40 mt-2 max-w-md mx-auto">
+                <p className="text-sm text-zinc-500 mt-2 max-w-md mx-auto">
                   We couldn't find your face in any event photos yet. We'll keep scanning new uploads!
                 </p>
               </div>

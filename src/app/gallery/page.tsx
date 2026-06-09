@@ -26,17 +26,17 @@ export default async function GalleryPage() {
   })
 
   return (
-    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#050505]">
+    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#F9F8F6]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Global Gallery</h1>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="text-zinc-600 max-w-2xl mx-auto">
             Discover the latest photos and videos uploaded from events across the platform.
           </p>
         </div>
 
         {allMedia.length === 0 ? (
-          <div className="text-center py-20 text-white/50 border border-dashed border-white/10 rounded-2xl">
+          <div className="text-center py-20 text-zinc-900/50 border border-dashed border-black/10 rounded-2xl">
             <p>No media found. Check back later!</p>
           </div>
         ) : (

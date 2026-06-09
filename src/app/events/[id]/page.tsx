@@ -37,10 +37,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   // Security check: Only allow access to private events if user is creator or admin
   if (!event.isPublic && !isCreatorOrAdmin) {
     return (
-      <div className="min-h-screen pt-32 pb-12 px-6 flex items-center justify-center bg-[#050505]">
+      <div className="min-h-screen pt-32 pb-12 px-6 flex items-center justify-center bg-[#F9F8F6]">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Private Event</h1>
-          <p className="text-white/60">You do not have permission to view this event's details or media.</p>
+          <h1 className="text-3xl font-bold text-zinc-900 mb-4">Private Event</h1>
+          <p className="text-zinc-600">You do not have permission to view this event's details or media.</p>
         </div>
       </div>
     )
@@ -51,17 +51,17 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const displayCover = event.coverImage || `/covers/${randomCoverId}.jpg`;
 
   return (
-    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#050505]">
+    <div className="min-h-screen pt-32 pb-12 px-6 bg-[#F9F8F6]">
       <div className="max-w-7xl mx-auto">
         {/* Event Header */}
-        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-white/5 backdrop-blur-sm group">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" />
+        <div className="relative rounded-3xl overflow-hidden mb-12 border border-black/10 bg-[#F9F8F6]/5 backdrop-blur-sm group">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#F9F8F6] via-[#F9F8F6]/80 to-transparent z-10" />
           <img src={displayCover} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
 
           <div className="absolute bottom-0 left-0 p-8 z-20 w-full flex flex-col md:flex-row justify-between items-end">
             <div>
               <div className="flex items-center space-x-3 mb-3">
-                <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+                <span className="px-3 py-1 bg-[#F9F8F6]/10 backdrop-blur-md rounded-full text-xs font-medium border border-black/10">
                   {event.category}
                 </span>
                 {event.isPublic ? (
@@ -70,8 +70,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-medium border border-red-500/20">Private</span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">{event.name}</h1>
-              <p className="text-white/80 max-w-2xl text-lg">{event.description}</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-2">{event.name}</h1>
+              <p className="text-zinc-800 max-w-2xl text-lg">{event.description}</p>
             </div>
           </div>
         </div>
@@ -79,42 +79,42 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar / Info */}
           <div className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
-              <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-4">Event Details</h3>
-              <div className="space-y-4 text-sm text-white/70 mb-6">
+            <div className="bg-[#F9F8F6]/5 border border-black/10 rounded-2xl p-6 backdrop-blur-md">
+              <h3 className="text-lg font-semibold mb-4 border-b border-black/10 pb-4">Event Details</h3>
+              <div className="space-y-4 text-sm text-zinc-900/70 mb-6">
                 <div className="flex items-start space-x-3">
-                  <Calendar className="w-5 h-5 text-indigo-400 mt-0.5" />
+                  <Calendar className="w-5 h-5 text-[#8FAD88] mt-0.5" />
                   <div>
-                    <p className="font-medium text-white">Date</p>
+                    <p className="font-medium text-zinc-900">Date</p>
                     <p>{format(new Date(event.date), "MMMM d, yyyy")}</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-purple-400 mt-0.5" />
+                  <MapPin className="w-5 h-5 text-[#C1D5C0] mt-0.5" />
                   <div>
-                    <p className="font-medium text-white">Location</p>
+                    <p className="font-medium text-zinc-900">Location</p>
                     <p>{event.location || "TBA"}</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <ImageIcon className="w-5 h-5 text-pink-400 mt-0.5" />
                   <div>
-                    <p className="font-medium text-white">Total Media</p>
+                    <p className="font-medium text-zinc-900">Total Media</p>
                     <p>{event.media.length} items</p>
                   </div>
                 </div>
               </div>
               
               {isCreatorOrAdmin && (
-                <div className="pt-4 border-t border-white/10 flex justify-center">
+                <div className="pt-4 border-t border-black/10 flex justify-center">
                   <DeleteEventButton eventId={event.id} />
                 </div>
               )}
             </div>
 
             {canUpload && (
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
-                <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-4">Upload Media</h3>
+              <div className="bg-[#F9F8F6]/5 border border-black/10 rounded-2xl p-6 backdrop-blur-md">
+                <h3 className="text-lg font-semibold mb-4 border-b border-black/10 pb-4">Upload Media</h3>
                 <Uploader eventId={event.id} />
               </div>
             )}
@@ -129,10 +129,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </div>
 
             {event.media.length === 0 ? (
-              <div className="py-32 text-center border border-dashed border-white/10 rounded-2xl bg-white/5">
-                <ImageIcon className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <div className="py-32 text-center border border-dashed border-black/10 rounded-2xl bg-[#F9F8F6]/5">
+                <ImageIcon className="w-12 h-12 text-zinc-900/20 mx-auto mb-4" />
                 <h3 className="text-xl font-medium mb-1">No media yet</h3>
-                <p className="text-white/50">Check back later for event photos and videos.</p>
+                <p className="text-zinc-900/50">Check back later for event photos and videos.</p>
               </div>
             ) : (
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">

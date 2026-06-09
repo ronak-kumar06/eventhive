@@ -47,9 +47,9 @@ export function NotificationBell() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'like': return <Heart className="w-4 h-4 text-pink-500" />
-      case 'comment': return <MessageCircle className="w-4 h-4 text-indigo-400" />
+      case 'comment': return <MessageCircle className="w-4 h-4 text-[#8FAD88]" />
       case 'tag': return <Tag className="w-4 h-4 text-green-400" />
-      default: return <Bell className="w-4 h-4 text-white/70" />
+      default: return <Bell className="w-4 h-4 text-zinc-900/70" />
     }
   }
 
@@ -60,9 +60,9 @@ export function NotificationBell() {
           setIsOpen(!isOpen)
           if (!isOpen && unreadCount > 0) markAsRead()
         }}
-        className="relative p-2 rounded-full hover:bg-white/10 transition"
+        className="relative p-2 rounded-full hover:bg-[#F9F8F6]/10 transition"
       >
-        <Bell className="w-5 h-5 text-white/80" />
+        <Bell className="w-5 h-5 text-zinc-800" />
         {unreadCount > 0 && (
           <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-[#050505]" />
         )}
@@ -79,9 +79,9 @@ export function NotificationBell() {
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute right-0 mt-2 w-80 bg-[#111] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden"
+              className="absolute right-0 mt-2 w-80 bg-[#F3EFE9] border border-black/10 rounded-xl shadow-2xl z-50 overflow-hidden"
             >
-              <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+              <div className="p-4 border-b border-black/10 flex justify-between items-center bg-[#F9F8F6]/5">
                 <h3 className="font-semibold text-sm">Notifications</h3>
                 {unreadCount === 0 && notifications.length > 0 && (
                   <CheckCheck className="w-4 h-4 text-green-500/70" />
@@ -89,21 +89,21 @@ export function NotificationBell() {
               </div>
               <div className="max-h-80 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-sm text-white/40">
+                  <div className="p-6 text-center text-sm text-zinc-500">
                     No notifications yet
                   </div>
                 ) : (
                   notifications.map((notif: any) => (
                     <div 
                       key={notif.id} 
-                      className={`p-4 border-b border-white/5 flex space-x-3 items-start transition ${notif.read ? 'opacity-60' : 'bg-indigo-500/5'}`}
+                      className={`p-4 border-b border-black/5 flex space-x-3 items-start transition ${notif.read ? 'opacity-60' : 'bg-indigo-500/5'}`}
                     >
-                      <div className="mt-1 bg-white/5 p-1.5 rounded-full">
+                      <div className="mt-1 bg-[#F9F8F6]/5 p-1.5 rounded-full">
                         {getIcon(notif.type)}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-white/90 leading-tight">{notif.message}</p>
-                        <span className="text-xs text-white/40 mt-1 block">
+                        <p className="text-sm text-zinc-900 leading-tight">{notif.message}</p>
+                        <span className="text-xs text-zinc-500 mt-1 block">
                           {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>

@@ -47,21 +47,21 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-600/10 blur-[100px]" />
-        <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-purple-600/10 blur-[100px]" />
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-[#8FAD88]/20 blur-[100px]" />
+        <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#C1D5C0]/20 blur-[100px]" />
       </div>
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl relative z-10"
+        className="w-full max-w-md bg-[#F9F8F6]/5 border border-black/10 p-8 rounded-2xl backdrop-blur-xl relative z-10"
       >
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex h-12 w-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 items-center justify-center mb-4">
-            <span className="text-white font-bold text-xl">E</span>
+          <Link href="/" className="inline-flex h-12 w-12 rounded-full bg-gradient-to-tr from-[#8FAD88] to-[#C1D5C0] items-center justify-center mb-4">
+            <span className="text-zinc-900 font-bold text-xl">E</span>
           </Link>
           <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="text-white/60 text-sm mt-2">Sign in to your EventSphere account</p>
+          <p className="text-zinc-600 text-sm mt-2">Sign in to your EventSphere account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,31 +73,31 @@ export default function LoginPage() {
               type="email" 
               placeholder="you@example.com" 
               required 
-              className="bg-black/20 border-white/10"
+              className="bg-[#F9F8F6]/50 border-black/10"
             />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link href="#" className="text-xs text-indigo-400 hover:text-indigo-300">Forgot password?</Link>
+              <Link href="#" className="text-xs text-[#8FAD88] hover:text-indigo-300">Forgot password?</Link>
             </div>
             <Input 
               id="password" 
               name="password"
               type="password" 
               required 
-              className="bg-black/20 border-white/10"
+              className="bg-[#F9F8F6]/50 border-black/10"
             />
           </div>
 
-          <Button type="submit" className="w-full bg-white text-black hover:bg-white/90 mt-6" disabled={loading}>
+          <Button type="submit" className="w-full bg-white text-white hover:bg-white/90 mt-6" disabled={loading}>
             {loading ? "Signing in..." : "Sign in"}
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-white/60">
+        <div className="mt-6 text-center text-sm text-zinc-600">
           Don't have an account?{" "}
-          <Link href="/register" className="text-white hover:underline">
+          <Link href="/register" className="text-zinc-900 hover:underline">
             Sign up
           </Link>
         </div>
