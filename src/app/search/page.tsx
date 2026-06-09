@@ -99,7 +99,6 @@ export default async function SearchPage({
               name="date"
               defaultValue={dateFilter}
               className="w-full sm:w-48 bg-background/5 border border-white/10 rounded-xl px-4 py-4 text-lg focus:outline-none focus:border-indigo-500 transition shadow-2xl backdrop-blur-md text-foreground"
-              onChange={(e) => e.target.form?.submit()}
             >
               <option value="" className="bg-background text-foreground">Any Time</option>
               <option value="24h" className="bg-background text-foreground">Past 24 Hours</option>
