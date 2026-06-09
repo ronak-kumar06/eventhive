@@ -34,7 +34,7 @@ export default async function EventsPage() {
           
           {(session?.user?.role === "ADMIN" || session?.user?.role === "PHOTOGRAPHER") && (
             <Link href="/events/create" className="mt-4 md:mt-0">
-              <Button className="bg-white text-white hover:bg-white/90">
+              <Button className="bg-indigo-600 text-white hover:bg-indigo-700">
                 Create Event
               </Button>
             </Link>

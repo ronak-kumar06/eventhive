@@ -10,7 +10,7 @@ export function Footer() {
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8FAD88] to-[#C1D5C0] flex items-center justify-center">
                 <span className="text-zinc-900 font-bold">E</span>
               </div>
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 EventSphere
               </span>
             </Link>

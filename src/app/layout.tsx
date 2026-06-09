@@ -23,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${inter.variable} antialiased min-h-screen flex flex-col bg-[#F9F8F6] text-zinc-900`}
+        className={`${inter.variable} antialiased min-h-screen flex flex-col`}
       >
         <AuthProvider>
           <SocketProvider>
@@ -34,7 +34,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
-            <Toaster theme="dark" position="bottom-right" />
+            <Toaster theme="light" position="bottom-right" />
           </SocketProvider>
         </AuthProvider>
       </body>

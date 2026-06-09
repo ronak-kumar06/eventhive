@@ -22,7 +22,7 @@ export function Navbar() {
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8FAD88] to-[#C1D5C0] flex items-center justify-center">
             <span className="text-zinc-900 font-bold">E</span>
           </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
             EventSphere
           </span>
         </Link>
@@ -56,7 +56,7 @@ export function Navbar() {
                 <Button variant="ghost" className="text-zinc-800 hover:text-zinc-900 hover:bg-[#F9F8F6]/10">Log in</Button>
               </Link>
               <Link href="/register">
-                <Button className="bg-white text-white hover:bg-white/90">Sign up</Button>
+                <Button className="bg-indigo-600 text-white hover:bg-indigo-700">Sign up</Button>
               </Link>
             </>
           )}

@@ -51,7 +51,7 @@ export default function Home() {
           className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6"
         >
           <Link href="/events">
-            <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 bg-white text-white hover:bg-white/90 rounded-full">
+            <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 bg-indigo-600 text-white hover:bg-indigo-700 rounded-full">
               Explore Events
             </Button>
           </Link>
