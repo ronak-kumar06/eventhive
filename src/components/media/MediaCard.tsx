@@ -235,10 +235,10 @@ export function MediaCard({ media, currentUserId, isEventCreator, userRole }: Me
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#F3EFE9] border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-[80vh] max-h-[600px]"
+              className="bg-background border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col h-[80vh] max-h-[600px]"
             >
-              <div className="p-4 border-b border-white/10 flex justify-between items-center bg-background/5">
-                <h3 className="font-semibold text-lg">Comments</h3>
+              <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 className="font-semibold text-lg text-foreground">Comments</h3>
                 <button onClick={() => setShowComments(false)} className="text-foreground/50 hover:text-foreground">
                   <X className="w-5 h-5" />
                 </button>
@@ -248,38 +248,38 @@ export function MediaCard({ media, currentUserId, isEventCreator, userRole }: Me
                 {media.comments && media.comments.length > 0 ? (
                   media.comments.map((comment: any) => (
                     <div key={comment.id} className="flex space-x-3">
-                      <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-[#8FAD88]/20 flex items-center justify-center shrink-0">
                         <span className="text-[#8FAD88] text-xs font-bold">{comment.user.name?.charAt(0) || "U"}</span>
                       </div>
                       <div>
-                        <div className="bg-background/5 border border-white/5 rounded-2xl rounded-tl-none px-4 py-2 text-sm">
-                          <span className="font-semibold text-indigo-300 block mb-1">{comment.user.name}</span>
+                        <div className="bg-white/5 border border-white/5 rounded-2xl rounded-tl-none px-4 py-2 text-sm">
+                          <span className="font-semibold text-[#8FAD88] block mb-1">{comment.user.name}</span>
                           <span className="text-foreground">{comment.content}</span>
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-10 text-zinc-500">
+                  <div className="text-center py-10 text-foreground/40">
                     <MessageCircle className="w-10 h-10 mx-auto mb-3 opacity-20" />
                     <p>No comments yet. Be the first!</p>
                   </div>
                 )}
               </div>
 
-              <div className="p-4 border-t border-white/10 bg-background/40">
+              <div className="p-4 border-t border-white/10 bg-white/5">
                 <form onSubmit={handleAddComment} className="flex relative">
                   <input 
                     type="text" 
                     placeholder="Add a comment..."
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    className="w-full bg-background/5 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm focus:outline-none focus:border-indigo-500 transition"
+                    className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm text-foreground focus:outline-none focus:border-[#8FAD88] transition"
                   />
                   <button 
                     type="submit" 
                     disabled={isCommenting || !commentText.trim()}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-indigo-500 hover:bg-indigo-600 disabled:bg-background/10 disabled:text-foreground/30 flex items-center justify-center transition"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#8FAD88] hover:bg-[#7a9574] text-background disabled:bg-white/10 disabled:text-foreground/30 flex items-center justify-center transition"
                   >
                     <Send className="w-4 h-4" />
                   </button>
