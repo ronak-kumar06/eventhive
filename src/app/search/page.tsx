@@ -6,11 +6,12 @@ import { Search as SearchIcon } from "lucide-react"
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; date?: string }
+  searchParams: Promise<{ q?: string; date?: string }>
 }) {
+  const resolvedParams = await searchParams;
   const session = await auth()
-  const query = searchParams.q || ""
-  const dateFilter = searchParams.date || ""
+  const query = resolvedParams.q || ""
+  const dateFilter = resolvedParams.date || ""
 
   let media: any[] = []
 
