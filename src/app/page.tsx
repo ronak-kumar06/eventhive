@@ -62,45 +62,7 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* 3D Dashboard Mockup Presentation */}
-        <motion.div
-          initial={{ opacity: 0, y: 100, rotateX: 20 }}
-          animate={{ opacity: 1, y: [0, -10, 0], rotateX: [10, 15, 10] }}
-          transition={{ 
-            opacity: { duration: 1.2, delay: 0.8, ease: "easeOut" },
-            y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-            rotateX: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-          }}
-          style={{ perspective: 1200 }}
-          className="w-full max-w-6xl mt-20 relative"
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent z-10 h-full w-full top-1/2" />
-          <div className="relative rounded-2xl border border-white/10 bg-background/5 p-2 backdrop-blur-xl overflow-hidden shadow-[0_35px_60px_-15px_rgba(143,173,136,0.15)]">
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#8FAD88] to-transparent opacity-80" />
-            <div className="h-[400px] md:h-[600px] w-full rounded-xl bg-background/80 border border-white/5 overflow-hidden flex flex-col">
-              {/* Fake UI Header */}
-              <div className="h-12 border-b border-white/5 flex items-center px-4 space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              </div>
-              {/* Fake UI Body */}
-              <div className="flex-1 p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="col-span-2 space-y-6">
-                  <div className="h-48 rounded-xl bg-background/5 border border-white/5 animate-pulse" />
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="h-32 rounded-xl bg-background/5 border border-white/5 animate-pulse" />
-                    <div className="h-32 rounded-xl bg-background/5 border border-white/5 animate-pulse delay-75" />
-                  </div>
-                </div>
-                <div className="space-y-6">
-                  <div className="h-24 rounded-xl bg-background/5 border border-white/5 animate-pulse delay-150" />
-                  <div className="h-64 rounded-xl bg-background/5 border border-white/5 animate-pulse delay-200" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+
       </div>
 
       {/* Features Section */}
