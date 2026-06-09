@@ -49,7 +49,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     )
   }
 
-  const displayCover = event.coverImage || getDefaultCover(event.id);
+  // Ensure we only use valid S3 HTTP URLs, fallback to Unsplash default if it's a broken old local file
+  const displayCover = (event.coverImage && event.coverImage.startsWith("http")) 
+    ? event.coverImage 
+    : getDefaultCover(event.id);
 
   return (
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
