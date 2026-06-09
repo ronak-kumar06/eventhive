@@ -61,7 +61,7 @@ export default async function EventsPage() {
                         alt={event.name} 
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
-                      <div className="absolute top-4 right-4 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-xs font-medium text-black border border-white/10">
                         {event.category}
                       </div>
                   </div>

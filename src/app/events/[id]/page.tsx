@@ -55,7 +55,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="max-w-7xl mx-auto">
         {/* Event Header */}
         <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-background/5 backdrop-blur-sm group">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#F9F8F6]/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-10" />
           <img src={displayCover} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
 
           <div className="absolute bottom-0 left-0 p-8 z-20 w-full flex flex-col md:flex-row justify-between items-end">
