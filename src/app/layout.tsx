@@ -29,6 +29,10 @@ export default function RootLayout({
       >
         <AuthProvider>
           <SocketProvider>
+            {/* Global Background gradients */}
+            <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#8FAD88]/20 blur-[120px] pointer-events-none z-[-1]" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#C1D5C0]/20 blur-[120px] pointer-events-none z-[-1]" />
+
             <Navbar />
             <main className="flex-1">
               {children}

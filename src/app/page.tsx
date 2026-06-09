@@ -7,9 +7,6 @@ import { Button } from "@/components/ui/button"
 export default function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Background gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#8FAD88]/30 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#C1D5C0]/40 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-[90vh] px-6 text-center pt-24">
         <motion.div
