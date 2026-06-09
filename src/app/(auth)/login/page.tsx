@@ -54,14 +54,14 @@ export default function LoginPage() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-[#F9F8F6]/5 border border-black/10 p-8 rounded-2xl backdrop-blur-xl relative z-10"
+        className="w-full max-w-md bg-background/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl relative z-10"
       >
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex h-12 w-12 rounded-full bg-gradient-to-tr from-[#8FAD88] to-[#C1D5C0] items-center justify-center mb-4">
-            <span className="text-zinc-900 font-bold text-xl">E</span>
+            <span className="text-foreground font-bold text-xl">E</span>
           </Link>
           <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="text-zinc-600 text-sm mt-2">Sign in to your EventSphere account</p>
+          <p className="text-muted-foreground text-sm mt-2">Sign in to your EventSphere account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,20 +73,20 @@ export default function LoginPage() {
               type="email" 
               placeholder="you@example.com" 
               required 
-              className="bg-[#F9F8F6]/50 border-black/10"
+              className="bg-background/50 border-white/10"
             />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link href="#" className="text-xs text-[#8FAD88] hover:text-indigo-300">Forgot password?</Link>
+              <Link href="#" className="text-xs text-primary hover:text-primary/80">Forgot password?</Link>
             </div>
             <Input 
               id="password" 
               name="password"
               type="password" 
               required 
-              className="bg-[#F9F8F6]/50 border-black/10"
+              className="bg-background/50 border-white/10"
             />
           </div>
 
@@ -95,9 +95,9 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-zinc-600">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <Link href="/register" className="text-zinc-900 hover:underline">
+          <Link href="/register" className="text-foreground hover:underline">
             Sign up
           </Link>
         </div>
