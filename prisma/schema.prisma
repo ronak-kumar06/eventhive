@@ -45,6 +45,17 @@ model User {
   comments      Comment[]
   likes         Like[]
   favorites     Favorite[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   String   @db.Text
+  type      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Account {

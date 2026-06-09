@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useSession, signOut } from "next-auth/react"
+import { NotificationBell } from "./NotificationBell"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -44,6 +45,7 @@ export function Navbar() {
               <span className="text-sm text-white/80 hidden sm:inline-block">
                 {session.user.name || session.user.email}
               </span>
+              <NotificationBell />
               <Button onClick={() => signOut()} variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10">
                 Log out
               </Button>

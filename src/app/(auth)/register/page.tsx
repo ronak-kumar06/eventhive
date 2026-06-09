@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { registerUser } from "./action"
-import { loginUser } from "../login/action"
+import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -32,15 +32,23 @@ export default function RegisterPage() {
         toast.success("Account created successfully. Logging you in...")
         
         // Auto-login
-        const formData = new FormData()
-        formData.append("email", email)
-        formData.append("password", password)
-        await loginUser(formData)
-        // Note: loginUser throws redirect error upon success
+        const loginRes = await signIn("credentials", {
+          email,
+          password,
+          redirect: false
+        })
+        
+        if (!loginRes?.error) {
+          router.push("/")
+          router.refresh()
+        } else {
+          toast.error("Auto-login failed. Please sign in.")
+          router.push("/login")
+        }
       }
     } catch (error) {
-      // loginUser throws the redirect error, let it propagate!
-      throw error;
+      toast.error("An unexpected error occurred")
+      setLoading(false)
     }
   }
 

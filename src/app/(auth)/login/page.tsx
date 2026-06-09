@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
-import { loginUser } from "./action"
+import { signIn } from "next-auth/react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -20,17 +20,26 @@ export default function LoginPage() {
 
     try {
       const formData = new FormData(e.currentTarget)
-      const res = await loginUser(formData)
+      const email = formData.get("email") as string
+      const password = formData.get("password") as string
+
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false
+      })
 
       if (res?.error) {
-        toast.error(res.error)
+        toast.error("Invalid credentials")
         setLoading(false)
       } else {
         toast.success("Logged in successfully")
+        router.push("/")
+        router.refresh()
       }
     } catch (error) {
-      // Re-throw so Next.js router can intercept the redirect!
-      throw error;
+      toast.error("An unexpected error occurred")
+      setLoading(false)
     }
   }
 
