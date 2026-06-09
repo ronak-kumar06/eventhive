@@ -62,7 +62,7 @@ export function EditCoverButton({ eventId, hasCustomCover }: EditCoverButtonProp
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center justify-center gap-2 p-2">
       <input 
         type="file" 
         accept="image/*" 
@@ -75,10 +75,10 @@ export function EditCoverButton({ eventId, hasCustomCover }: EditCoverButtonProp
         size="sm"
         disabled={loading}
         onClick={() => inputRef.current?.click()}
-        className="bg-background/40 backdrop-blur-md border-white/20 text-foreground hover:bg-background/60 shadow-lg"
+        className="bg-background/40 backdrop-blur-md border-white/20 text-foreground hover:bg-background/60 shadow-lg text-xs h-8"
       >
-        {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImageIcon className="w-4 h-4 mr-2" />}
-        Change Cover
+        {loading ? <Loader2 className="w-3 h-3 mr-2 animate-spin" /> : <ImageIcon className="w-3 h-3 mr-2" />}
+        Change
       </Button>
       
       {hasCustomCover && (
@@ -87,9 +87,9 @@ export function EditCoverButton({ eventId, hasCustomCover }: EditCoverButtonProp
           size="sm"
           disabled={loading}
           onClick={handleRemove}
-          className="shadow-lg backdrop-blur-md"
+          className="shadow-lg backdrop-blur-md h-8 w-8 p-0"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="w-3 h-3" />
         </Button>
       )}
     </div>

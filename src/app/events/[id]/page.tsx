@@ -58,41 +58,40 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         {/* Event Header */}
-        {/* Event Header */}
-        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 group min-h-[400px] md:min-h-[480px] flex items-center">
+        <div className="relative rounded-3xl overflow-hidden mb-8 border border-white/10 group min-h-[250px] md:min-h-[300px] flex items-center shadow-xl">
           {/* Blurred Background */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <img src={displayCover} className="w-full h-full object-cover blur-[80px] scale-125 opacity-50" alt="" />
-            <div className="absolute inset-0 bg-[#050505]/50 backdrop-blur-sm" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-[#050505]/80" />
+            <div className="absolute inset-0 bg-[#050505]/60 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
           </div>
 
-          <div className="relative z-20 p-8 md:p-12 w-full flex flex-col md:flex-row items-center md:items-start gap-10">
-            {/* Sharp Image Container */}
-            <div className="relative w-full max-w-[280px] md:max-w-[320px] aspect-[4/5] rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] border border-white/20 shrink-0 group/cover transition-transform duration-500 hover:scale-[1.02]">
+          <div className="relative z-20 p-8 md:p-10 w-full flex flex-col md:flex-row items-center gap-8 md:gap-10">
+            {/* Circular Cover Photo */}
+            <div className="relative w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.5)] border-4 border-white/10 shrink-0 group/cover transition-transform duration-500 hover:scale-105 bg-black/20">
               <img src={displayCover} className="w-full h-full object-cover" alt={event.name} />
               
               {isCreatorOrAdmin && (
-                <div className="absolute top-4 right-4 z-30 opacity-100 md:opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300">
-                  <EditCoverButton eventId={event.id} hasCustomCover={!!event.coverImage} />
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-100 md:opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300">
+                  <EditCoverButton eventId={event.id} hasCustomCover={!!(event.coverImage && event.coverImage.startsWith('http'))} />
                 </div>
               )}
             </div>
 
             {/* Event Info */}
-            <div className="flex-1 text-center md:text-left flex flex-col justify-center h-full pt-4 md:pt-8">
-              <div className="flex items-center justify-center md:justify-start space-x-3 mb-6">
-                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white tracking-widest border border-white/20 uppercase shadow-lg">
+            <div className="flex-1 text-center md:text-left flex flex-col justify-center h-full">
+              <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white tracking-widest border border-white/20 uppercase shadow-md">
                   {event.category}
                 </span>
                 {event.isPublic ? (
-                  <span className="px-4 py-1.5 bg-[#8FAD88]/20 text-[#8FAD88] rounded-full text-xs font-bold border border-[#8FAD88]/30 tracking-widest shadow-lg">PUBLIC</span>
+                  <span className="px-3 py-1 bg-[#8FAD88]/20 text-[#8FAD88] rounded-full text-xs font-bold border border-[#8FAD88]/30 tracking-widest shadow-md">PUBLIC</span>
                 ) : (
-                  <span className="px-4 py-1.5 bg-red-500/20 text-red-400 rounded-full text-xs font-bold border border-red-500/30 tracking-widest shadow-lg">PRIVATE</span>
+                  <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-bold border border-red-500/30 tracking-widest shadow-md">PRIVATE</span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1] drop-shadow-2xl">{event.name}</h1>
-              <p className="text-white/80 max-w-2xl text-lg md:text-xl leading-relaxed drop-shadow-md font-medium">{event.description}</p>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4 tracking-tight leading-tight drop-shadow-xl">{event.name}</h1>
+              <p className="text-white/80 max-w-2xl text-base md:text-lg leading-relaxed drop-shadow-md font-medium line-clamp-3">{event.description}</p>
             </div>
           </div>
         </div>
