@@ -1,0 +1,163 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
+import { editEvent } from "../../action"
+import { format } from "date-fns"
+
+interface EditEventClientProps {
+  event: {
+    id: string
+    name: string
+    description: string | null
+    date: Date
+    category: string
+    location: string | null
+    isPublic: boolean
+  }
+}
+
+export function EditEventClient({ event }: EditEventClientProps) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+
+    const formData = new FormData(e.currentTarget)
+    
+    try {
+      const res = await editEvent(event.id, formData)
+
+      if (res.error) {
+        toast.error(res.error)
+      } else {
+        toast.success("Event updated successfully!")
+        router.push(`/events/${event.id}`)
+      }
+    } catch (error) {
+      toast.error("Something went wrong")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Format date for the native date input (YYYY-MM-DD)
+  const formattedDate = format(new Date(event.date), "yyyy-MM-dd")
+
+  return (
+    <div className="min-h-screen pt-32 pb-12 px-6">
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Edit Event Details</h1>
+          <p className="text-muted-foreground">Update the information for {event.name}.</p>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-background/5 border border-white/10 p-8 rounded-2xl backdrop-blur-xl"
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="name">Event Name</Label>
+              <Input 
+                id="name" 
+                name="name"
+                defaultValue={event.name}
+                placeholder="E.g., Annual Tech Fest 2026" 
+                required 
+                className="bg-background/50 border-white/10"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <textarea 
+                id="description" 
+                name="description"
+                defaultValue={event.description || ""}
+                rows={4}
+                className="w-full rounded-md border border-white/10 bg-background/50 px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="Describe the event..." 
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="date">Date</Label>
+                <Input 
+                  id="date" 
+                  name="date"
+                  type="date" 
+                  defaultValue={formattedDate}
+                  required 
+                  className="bg-background/50 border-white/10"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="category">Category</Label>
+                <select 
+                  id="category" 
+                  name="category"
+                  defaultValue={event.category}
+                  required
+                  className="flex h-10 w-full rounded-md border border-white/10 bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="" disabled className="bg-background text-foreground">Select Category</option>
+                  <option value="Workshop" className="bg-background text-foreground">Workshop</option>
+                  <option value="Photoshoot" className="bg-background text-foreground">Photoshoot</option>
+                  <option value="Trip" className="bg-background text-foreground">Trip</option>
+                  <option value="Competition" className="bg-background text-foreground">Competition</option>
+                  <option value="Cultural Fest" className="bg-background text-foreground">Cultural Fest</option>
+                  <option value="Party" className="bg-background text-foreground">Party</option>
+                  <option value="Other" className="bg-background text-foreground">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="location">Location</Label>
+              <Input 
+                id="location" 
+                name="location"
+                defaultValue={event.location || ""}
+                placeholder="E.g., Main Auditorium" 
+                className="bg-background/50 border-white/10"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="visibility">Visibility</Label>
+              <select 
+                id="visibility" 
+                name="visibility"
+                defaultValue={event.isPublic ? "public" : "private"}
+                className="flex h-10 w-full rounded-md border border-white/10 bg-background/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="public" className="bg-background text-foreground">Public (Visible to everyone)</option>
+                <option value="private" className="bg-background text-foreground">Private (Only visible to you until shared)</option>
+              </select>
+            </div>
+
+            <div className="pt-4 border-t border-white/10 flex justify-end space-x-4">
+              <Button type="button" variant="outline" onClick={() => router.back()} className="border-white/20 text-foreground hover:bg-background/10">
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90" disabled={loading}>
+                {loading ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </div>
+  )
+}

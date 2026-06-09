@@ -6,8 +6,9 @@ import { MediaCard } from "@/components/media/MediaCard"
 import { DeleteEventButton } from "@/components/events/DeleteEventButton"
 import { EditCoverButton } from "@/components/events/EditCoverButton"
 import { format } from "date-fns"
-import { MapPin, Calendar, LayoutGrid, Image as ImageIcon } from "lucide-react"
-
+import { MapPin, Calendar, LayoutGrid, Image as ImageIcon, Edit } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { getDefaultCover } from "@/lib/defaultCovers"
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -126,7 +127,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               </div>
               
               {isCreatorOrAdmin && (
-                <div className="pt-4 border-t border-white/10 flex justify-center">
+                <div className="pt-4 border-t border-white/10 flex flex-col space-y-3">
+                  <Link href={`/events/${event.id}/edit`} className="w-full">
+                    <Button variant="outline" className="w-full bg-background/40 hover:bg-background/60 border-white/20">
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit Details
+                    </Button>
+                  </Link>
                   <DeleteEventButton eventId={event.id} />
                 </div>
               )}
