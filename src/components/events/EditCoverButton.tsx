@@ -3,14 +3,15 @@
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
-import { ImageIcon, Loader2 } from "lucide-react"
-import { updateEventCover } from "@/app/events/action"
+import { ImageIcon, Loader2, Trash2 } from "lucide-react"
+import { updateEventCover, removeEventCover } from "@/app/events/action"
 
 interface EditCoverButtonProps {
   eventId: string
+  hasCustomCover?: boolean
 }
 
-export function EditCoverButton({ eventId }: EditCoverButtonProps) {
+export function EditCoverButton({ eventId, hasCustomCover }: EditCoverButtonProps) {
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -42,8 +43,26 @@ export function EditCoverButton({ eventId }: EditCoverButtonProps) {
     }
   }
 
+  const handleRemove = async () => {
+    if (!confirm("Are you sure you want to remove this cover photo?")) return;
+    
+    setLoading(true)
+    try {
+      const res = await removeEventCover(eventId)
+      if (res.error) {
+        toast.error(res.error)
+      } else {
+        toast.success("Cover photo removed, default applied.")
+      }
+    } catch (error: any) {
+      toast.error("Failed to remove cover photo")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <>
+    <div className="flex items-center gap-2">
       <input 
         type="file" 
         accept="image/*" 
@@ -56,11 +75,23 @@ export function EditCoverButton({ eventId }: EditCoverButtonProps) {
         size="sm"
         disabled={loading}
         onClick={() => inputRef.current?.click()}
-        className="bg-background/40 backdrop-blur-md border-white/20 text-foreground hover:bg-background/60"
+        className="bg-background/40 backdrop-blur-md border-white/20 text-foreground hover:bg-background/60 shadow-lg"
       >
         {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImageIcon className="w-4 h-4 mr-2" />}
         Change Cover
       </Button>
-    </>
+      
+      {hasCustomCover && (
+        <Button 
+          variant="destructive" 
+          size="sm"
+          disabled={loading}
+          onClick={handleRemove}
+          className="shadow-lg backdrop-blur-md"
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      )}
+    </div>
   )
 }

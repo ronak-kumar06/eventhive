@@ -71,7 +71,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               
               {isCreatorOrAdmin && (
                 <div className="absolute top-4 right-4 z-30 opacity-100 md:opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300">
-                  <EditCoverButton eventId={event.id} />
+                  <EditCoverButton eventId={event.id} hasCustomCover={!!event.coverImage} />
                 </div>
               )}
             </div>

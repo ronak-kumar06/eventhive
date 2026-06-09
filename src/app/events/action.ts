@@ -104,3 +104,29 @@ export async function updateEventCover(eventId: string, formData: FormData) {
     return { error: error.message || "Failed to update cover image" }
   }
 }
+
+export async function removeEventCover(eventId: string) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) return { error: "Unauthorized" }
+
+    const event = await prisma.event.findUnique({ where: { id: eventId } })
+    if (!event) return { error: "Event not found" }
+
+    if (session.user.role !== "ADMIN" && event.creatorId !== session.user.id) {
+      return { error: "Insufficient permissions" }
+    }
+
+    await prisma.event.update({
+      where: { id: eventId },
+      data: { coverImage: null }
+    })
+
+    revalidatePath(`/events/${eventId}`)
+    revalidatePath("/events")
+    return { success: true }
+  } catch (error: any) {
+    console.error("Remove cover error:", error)
+    return { error: "Failed to remove cover image" }
+  }
+}
