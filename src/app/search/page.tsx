@@ -28,27 +28,35 @@ export default async function SearchPage({
       }
     }
 
-    media = await prisma.media.findMany({
-      where: {
-        AND: [
-          query ? {
-            OR: [
-              { event: { name: { contains: query, mode: "insensitive" } } },
-              { event: { category: { contains: query, mode: "insensitive" } } },
-              { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
-              { uploader: { name: { contains: query, mode: "insensitive" } } }
-            ]
-          } : {},
-          dateFilter ? { createdAt: dateCondition } : {},
-          {
-            OR: [
-              { event: { isPublic: true } },
-              session?.user?.role === "ADMIN" ? {} : { event: { creatorId: session?.user?.id || "" } },
-              { eventId: null }
-            ]
-          }
+    const andConditions: any[] = []
+
+    if (query) {
+      andConditions.push({
+        OR: [
+          { event: { name: { contains: query, mode: "insensitive" } } },
+          { event: { category: { contains: query, mode: "insensitive" } } },
+          { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
+          { uploader: { name: { contains: query, mode: "insensitive" } } }
         ]
-      },
+      })
+    }
+
+    if (dateFilter) {
+      andConditions.push({ createdAt: dateCondition })
+    }
+
+    if (session?.user?.role !== "ADMIN") {
+      andConditions.push({
+        OR: [
+          { event: { isPublic: true } },
+          { event: { creatorId: session?.user?.id || "" } },
+          { eventId: null }
+        ]
+      })
+    }
+
+    media = await prisma.media.findMany({
+      where: andConditions.length > 0 ? { AND: andConditions } : {},
       include: {
         likes: true,
         favorites: true,
