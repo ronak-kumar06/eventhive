@@ -70,7 +70,7 @@ export default function RegisterPage() {
             <span className="text-foreground font-bold text-xl">E</span>
           </Link>
           <h1 className="text-2xl font-bold">Create an account</h1>
-          <p className="text-muted-foreground text-sm mt-2">Join EventSphere AI today</p>
+          <p className="text-muted-foreground text-sm mt-2">Join EventHive AI today</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EventSphere AI",
+  title: "EventHive AI",
   description: "Premium Event & Media Management Platform",
 };
 

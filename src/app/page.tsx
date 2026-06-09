@@ -19,7 +19,7 @@ export default function Home() {
           className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-background/5 border border-white/10 mb-8 backdrop-blur-md"
         >
           <span className="flex h-2 w-2 rounded-full bg-[#8FAD88] animate-pulse" />
-          <span className="text-sm font-medium text-foreground">EventSphere AI 2.0 is now live</span>
+          <span className="text-sm font-medium text-foreground">EventHive AI 2.0 is now live</span>
         </motion.div>
 
         <motion.h1

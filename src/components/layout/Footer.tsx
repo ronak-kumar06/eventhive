@@ -11,7 +11,7 @@ export function Footer() {
                 <span className="text-foreground font-bold">E</span>
               </div>
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#C1D5C0]">
-                EventSphere
+                EventHive
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -47,7 +47,7 @@ export function Footer() {
         </div>
         
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-500">
-          <p>© {new Date().getFullYear()} EventSphere AI. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} EventHive AI. All rights reserved.</p>
           <div className="flex space-x-4">
             <span className="opacity-50 cursor-not-allowed">Twitter</span>
             <span className="opacity-50 cursor-not-allowed">GitHub</span>

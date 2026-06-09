@@ -61,7 +61,7 @@ export default function LoginPage() {
             <span className="text-foreground font-bold text-xl">E</span>
           </Link>
           <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="text-muted-foreground text-sm mt-2">Sign in to your EventSphere account</p>
+          <p className="text-muted-foreground text-sm mt-2">Sign in to your EventHive account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

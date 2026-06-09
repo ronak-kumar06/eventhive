@@ -23,7 +23,7 @@ export function Navbar() {
             <span className="text-foreground font-bold">E</span>
           </div>
           <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#C1D5C0]">
-            EventSphere
+            EventHive
           </span>
         </Link>
 
