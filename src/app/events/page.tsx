@@ -5,6 +5,8 @@ import prisma from "@/lib/prisma"
 import { format } from "date-fns"
 import { auth } from "@/auth"
 
+import { getDefaultCover } from "@/lib/defaultCovers"
+
 export default async function EventsPage() {
   const session = await auth()
   
@@ -49,8 +51,7 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => {
-              const coverId = (event.id.charCodeAt(0) % 5) + 1;
-              const displayCover = event.coverImage || `/covers/${coverId}.jpg`;
+              const displayCover = event.coverImage || getDefaultCover(event.id);
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>

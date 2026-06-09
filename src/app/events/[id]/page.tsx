@@ -8,6 +8,8 @@ import { EditCoverButton } from "@/components/events/EditCoverButton"
 import { format } from "date-fns"
 import { MapPin, Calendar, LayoutGrid, Image as ImageIcon } from "lucide-react"
 
+import { getDefaultCover } from "@/lib/defaultCovers"
+
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const session = await auth()
@@ -47,9 +49,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     )
   }
 
-  // Get a deterministic cover from the public/covers folder if missing
-  const coverId = (event.id.charCodeAt(0) % 5) + 1;
-  const displayCover = event.coverImage || `/covers/${coverId}.jpg`;
+  const displayCover = event.coverImage || getDefaultCover(event.id);
 
   return (
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
