@@ -49,7 +49,7 @@ export default async function EventsPage() {
             <p className="text-muted-foreground">There are no upcoming events at the moment.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => {
               const displayCover = (event.coverImage && event.coverImage.startsWith("http")) 
                 ? event.coverImage 
@@ -57,8 +57,8 @@ export default async function EventsPage() {
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>
-                  <div className="group bg-background/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col shadow-lg">
-                    <div className="aspect-[4/3] bg-background/10 relative overflow-hidden">
+                  <div className="group bg-background/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition backdrop-blur-sm h-full flex flex-col">
+                    <div className="aspect-video bg-background/10 relative overflow-hidden">
                       <img 
                         src={displayCover} 
                         alt={event.name} 
