@@ -53,7 +53,7 @@ export default async function EventsPage() {
             {events.map((event) => {
               const displayCover = (event.coverImage && event.coverImage.startsWith("http")) 
                 ? event.coverImage 
-                : getDefaultCover(event.id);
+                : getDefaultCover(event.category);
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>
