@@ -6,8 +6,10 @@ import { toast } from "sonner"
 import { Camera, ScanFace, Loader2, LayoutGrid } from "lucide-react"
 import { saveSelfieEmbedding, findMyPhotos } from "./action"
 import { MediaCard } from "@/components/media/MediaCard"
+import { useSession } from "next-auth/react"
 
 export default function MyPhotosPage() {
+  const { data: session } = useSession()
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
