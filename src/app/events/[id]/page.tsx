@@ -4,6 +4,7 @@ import { auth } from "@/auth"
 import { Uploader } from "@/components/media/Uploader"
 import { MediaCard } from "@/components/media/MediaCard"
 import { DeleteEventButton } from "@/components/events/DeleteEventButton"
+import { EditCoverButton } from "@/components/events/EditCoverButton"
 import { format } from "date-fns"
 import { MapPin, Calendar, LayoutGrid, Image as ImageIcon } from "lucide-react"
 
@@ -46,9 +47,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     )
   }
 
-  // Get a random cover from the public/covers folder
-  const randomCoverId = Math.floor(Math.random() * 5) + 1;
-  const displayCover = event.coverImage || `/covers/${randomCoverId}.jpg`;
+  // Get a deterministic cover from the public/covers folder if missing
+  const coverId = (event.id.charCodeAt(0) % 5) + 1;
+  const displayCover = event.coverImage || `/covers/${coverId}.jpg`;
 
   return (
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
@@ -57,6 +58,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-background/5 backdrop-blur-sm group">
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-10" />
           <img src={displayCover} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
+
+          {isCreatorOrAdmin && (
+            <div className="absolute top-6 right-6 z-20">
+              <EditCoverButton eventId={event.id} />
+            </div>
+          )}
 
           <div className="absolute bottom-0 left-0 p-8 z-20 w-full flex flex-col md:flex-row justify-between items-end">
             <div>

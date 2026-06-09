@@ -49,8 +49,8 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => {
-              const randomCoverId = Math.floor(Math.random() * 5) + 1;
-              const displayCover = event.coverImage || `/covers/${randomCoverId}.jpg`;
+              const coverId = (event.id.charCodeAt(0) % 5) + 1;
+              const displayCover = event.coverImage || `/covers/${coverId}.jpg`;
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>
