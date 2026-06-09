@@ -13,6 +13,14 @@ export class LocalStorageProvider implements StorageProvider {
   private baseDir = path.join(process.cwd(), "public", "uploads")
 
   async uploadFile(file: File | Blob, originalName: string, folder: string): Promise<string> {
+    // If running on Vercel, the filesystem is read-only. We fallback to Base64 Data URIs.
+    if (process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV) {
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const base64 = buffer.toString("base64")
+      return `data:${file.type};base64,${base64}`
+    }
+
     const ext = path.extname(originalName) || ""
     const fileName = `${uuidv4()}${ext}`
     const uploadDir = path.join(this.baseDir, folder)

@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     const formData = await request.formData()
     const files = formData.getAll("file") as File[]
     const facesDataRaw = formData.getAll("facesData") as string[]
+    const tagsDataRaw = formData.getAll("tagsData") as string[]
     const eventId = formData.get("eventId") as string | null
 
     if (!files || files.length === 0) {
@@ -31,12 +32,30 @@ export async function POST(request: Request) {
       const file = files[i]
       const url = await storage.uploadFile(file, file.name, "media")
       
+      let validTags: string[] = []
+      if (tagsDataRaw[i]) {
+        try {
+          const parsedTags = JSON.parse(tagsDataRaw[i]) as string[]
+          if (Array.isArray(parsedTags)) {
+            validTags = parsedTags.filter(t => t.trim().length > 0)
+          }
+        } catch (e) {
+          console.error("Failed to parse tagsData for file", i, e)
+        }
+      }
+
       const media = await prisma.media.create({
         data: {
           url,
           type: file.type.startsWith("video") ? "VIDEO" : "IMAGE",
           uploaderId: session.user.id,
-          eventId: eventId || null
+          eventId: eventId || null,
+          tags: validTags.length > 0 ? {
+            connectOrCreate: validTags.map(tag => ({
+              where: { name: tag },
+              create: { name: tag }
+            }))
+          } : undefined
         }
       })
       

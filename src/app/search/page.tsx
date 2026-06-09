@@ -6,26 +6,40 @@ import { Search as SearchIcon } from "lucide-react"
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams: { q?: string; date?: string }
 }) {
   const session = await auth()
   const query = searchParams.q || ""
+  const dateFilter = searchParams.date || ""
 
   let media: any[] = []
 
-  if (query) {
-    // Basic Phase 2 Search: match event name, category, or tags
+  if (query || dateFilter) {
+    // Handle date filtering logic
+    let dateCondition = {}
+    if (dateFilter) {
+      const now = new Date()
+      if (dateFilter === "24h") {
+        dateCondition = { gte: new Date(now.getTime() - 24 * 60 * 60 * 1000) }
+      } else if (dateFilter === "week") {
+        dateCondition = { gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) }
+      } else if (dateFilter === "month") {
+        dateCondition = { gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) }
+      }
+    }
+
     media = await prisma.media.findMany({
       where: {
         AND: [
-          {
+          query ? {
             OR: [
               { event: { name: { contains: query, mode: "insensitive" } } },
               { event: { category: { contains: query, mode: "insensitive" } } },
               { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
               { uploader: { name: { contains: query, mode: "insensitive" } } }
             ]
-          },
+          } : {},
+          dateFilter ? { createdAt: dateCondition } : {},
           {
             OR: [
               { event: { isPublic: true } },
@@ -56,33 +70,46 @@ export default async function SearchPage({
             Search across events, tags, categories, and users.
           </p>
           
-          <form className="max-w-xl mx-auto relative" method="GET" action="/search">
-            <input 
-              type="text" 
-              name="q"
-              defaultValue={query}
-              placeholder="E.g., 'workshop', 'john doe', or 'beach'"
-              className="w-full bg-background/5 border border-white/10 rounded-full pl-6 pr-14 py-4 text-lg focus:outline-none focus:border-indigo-500 transition shadow-2xl backdrop-blur-md"
-            />
-            <button 
-              type="submit"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-indigo-500 hover:bg-indigo-600 flex items-center justify-center transition"
+          <form className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-4" method="GET" action="/search">
+            <div className="relative flex-1">
+              <input 
+                type="text" 
+                name="q"
+                defaultValue={query}
+                placeholder="E.g., 'workshop', 'john doe', or 'beach'"
+                className="w-full bg-background/5 border border-white/10 rounded-xl pl-6 pr-14 py-4 text-lg focus:outline-none focus:border-indigo-500 transition shadow-2xl backdrop-blur-md"
+              />
+              <button 
+                type="submit"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-indigo-500 hover:bg-indigo-600 flex items-center justify-center transition"
+              >
+                <SearchIcon className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
+            <select
+              name="date"
+              defaultValue={dateFilter}
+              className="w-full sm:w-48 bg-background/5 border border-white/10 rounded-xl px-4 py-4 text-lg focus:outline-none focus:border-indigo-500 transition shadow-2xl backdrop-blur-md text-foreground"
+              onChange={(e) => e.target.form?.submit()}
             >
-              <SearchIcon className="w-5 h-5 text-foreground" />
-            </button>
+              <option value="" className="bg-background text-foreground">Any Time</option>
+              <option value="24h" className="bg-background text-foreground">Past 24 Hours</option>
+              <option value="week" className="bg-background text-foreground">Past Week</option>
+              <option value="month" className="bg-background text-foreground">Past Month</option>
+            </select>
           </form>
         </div>
 
-        {query && (
+        {(query || dateFilter) && (
           <div className="mb-8 border-b border-white/10 pb-4">
             <h2 className="text-xl font-medium">
-              Results for <span className="text-[#8FAD88]">"{query}"</span>
+              Results {query && <span>for <span className="text-[#8FAD88]">"{query}"</span></span>}
             </h2>
             <p className="text-sm text-foreground/50 mt-1">Found {media.length} items</p>
           </div>
         )}
 
-        {query && media.length === 0 && (
+        {(query || dateFilter) && media.length === 0 && (
           <div className="py-20 text-center border border-dashed border-white/10 rounded-2xl bg-background/5">
             <SearchIcon className="w-12 h-12 text-foreground/20 mx-auto mb-4" />
             <h3 className="text-xl font-medium mb-1">No results found</h3>

@@ -58,10 +58,17 @@ export function Uploader({ eventId }: UploaderProps) {
     setStatusText("Loading AI Models...")
 
     try {
-      const faceapi = await import("@vladmandic/face-api")
+      const [faceapi, tf, mobilenet] = await Promise.all([
+        import("@vladmandic/face-api"),
+        import("@tensorflow/tfjs"),
+        import("@tensorflow-models/mobilenet")
+      ])
+      await tf.ready()
+
       const MODEL_URL = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/"
-      await Promise.all([
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL), // Use highly accurate model
+      const [mobilenetModel] = await Promise.all([
+        mobilenet.load({ version: 2, alpha: 1.0 }),
+        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL), 
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
       ])
@@ -75,6 +82,7 @@ export function Uploader({ eventId }: UploaderProps) {
         setStatusText(`Analyzing image ${i + 1} of ${files.length}...`)
 
         let fileFacesData = "[]"
+        let tagsData = "[]"
         if (file.type.startsWith("image/")) {
           const img = new Image()
           img.src = URL.createObjectURL(file)
@@ -108,11 +116,26 @@ export function Uploader({ eventId }: UploaderProps) {
             } else {
               console.warn(`No faces found in image ${i}`)
             }
+
+            // Generate Smart Tags
+            try {
+              const predictions = await mobilenetModel.classify(canvas)
+              if (predictions && predictions.length > 0) {
+                // Take top 3 predictions and extract their primary class name
+                const tags = predictions.slice(0, 3).map(p => p.className.split(',')[0].trim().toLowerCase())
+                tagsData = JSON.stringify(tags)
+                console.log(`Generated tags for image ${i}:`, tags)
+              }
+            } catch(e) {
+              console.error(`Failed to generate tags for image ${i}:`, e)
+            }
+
           } else {
             console.warn(`Browser could not read image ${i}. Likely unsupported format like HEIC.`)
           }
         }
         formData.append("facesData", fileFacesData)
+        formData.append("tagsData", tagsData)
       }
 
       setStatusText("Uploading to cloud...")
