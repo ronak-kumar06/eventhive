@@ -27,7 +27,6 @@
 - [Getting Started](#-getting-started)
 - [Environment Variables](#-environment-variables)
 - [API Overview](#-api-overview)
-- [Screenshots](#-screenshots-section)
 - [Future Enhancements](#-future-enhancements)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -267,17 +266,6 @@ AWS_S3_BUCKET_NAME="your_bucket_name"
   - `POST /api/notifications` - Mark notifications as read
 
 *(Note: Most heavy lifting is handled natively through Next.js Server Actions rather than traditional REST APIs).*
-
----
-
-## 🖼️ Screenshots Section
-
-> *(Replace these placeholders with your actual application screenshots)*
-
-* **Landing Page**: `[Placeholder: Beautiful event banner and call-to-action]`
-* **Dashboard**: `[Placeholder: Grid of active events]`
-* **Event Gallery**: `[Placeholder: Masonry layout of high-quality event photos]`
-* **Personalized Gallery**: `[Placeholder: Filtered view showing only photos of the logged-in user]`
 
 ---
 
