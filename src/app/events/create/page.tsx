@@ -91,14 +91,14 @@ export default function CreateEventPage() {
                   required
                   className="flex h-10 w-full rounded-md border border-white/10 bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <option value="" disabled className="bg-[#F3EFE9]">Select Category</option>
-                  <option value="Workshop" className="bg-[#F3EFE9]">Workshop</option>
-                  <option value="Photoshoot" className="bg-[#F3EFE9]">Photoshoot</option>
-                  <option value="Trip" className="bg-[#F3EFE9]">Trip</option>
-                  <option value="Competition" className="bg-[#F3EFE9]">Competition</option>
-                  <option value="Cultural Fest" className="bg-[#F3EFE9]">Cultural Fest</option>
-                  <option value="Party" className="bg-[#F3EFE9]">Party</option>
-                  <option value="Other" className="bg-[#F3EFE9]">Other</option>
+                  <option value="" disabled className="bg-background text-foreground">Select Category</option>
+                  <option value="Workshop" className="bg-background text-foreground">Workshop</option>
+                  <option value="Photoshoot" className="bg-background text-foreground">Photoshoot</option>
+                  <option value="Trip" className="bg-background text-foreground">Trip</option>
+                  <option value="Competition" className="bg-background text-foreground">Competition</option>
+                  <option value="Cultural Fest" className="bg-background text-foreground">Cultural Fest</option>
+                  <option value="Party" className="bg-background text-foreground">Party</option>
+                  <option value="Other" className="bg-background text-foreground">Other</option>
                 </select>
               </div>
             </div>
@@ -120,8 +120,8 @@ export default function CreateEventPage() {
                 name="visibility"
                 className="flex h-10 w-full rounded-md border border-white/10 bg-background/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value="public" className="bg-[#F3EFE9]">Public (Visible to everyone)</option>
-                <option value="private" className="bg-[#F3EFE9]">Private (Only visible to you until shared)</option>
+                <option value="public" className="bg-background text-foreground">Public (Visible to everyone)</option>
+                <option value="private" className="bg-background text-foreground">Private (Only visible to you until shared)</option>
               </select>
             </div>
 
