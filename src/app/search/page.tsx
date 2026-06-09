@@ -92,7 +92,7 @@ export default async function SearchPage({
 
         <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
           {media.map((item) => (
-            <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} />
+            <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} userRole={session?.user?.role} />
           ))}
         </div>
       </div>

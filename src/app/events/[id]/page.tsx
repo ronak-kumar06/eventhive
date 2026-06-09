@@ -137,7 +137,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             ) : (
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
                 {event.media.map((item) => (
-                  <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} isEventCreator={isCreatorOrAdmin} />
+                  <MediaCard key={item.id} media={item} currentUserId={session?.user?.id} isEventCreator={isCreatorOrAdmin} userRole={session?.user?.role} />
                 ))}
               </div>
             )}

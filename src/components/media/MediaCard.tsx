@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Heart, Star, MessageCircle, Send, X, Trash2 } from "lucide-react"
+import { Heart, Star, MessageCircle, Send, X, Trash2, Download } from "lucide-react"
 import { toggleLike, toggleFavorite, addComment, deleteMedia } from "@/app/media/action"
 import { toast } from "sonner"
 import { usePathname } from "next/navigation"
@@ -11,9 +11,10 @@ type MediaCardProps = {
   media: any
   currentUserId?: string
   isEventCreator?: boolean
+  userRole?: string
 }
 
-export function MediaCard({ media, currentUserId, isEventCreator }: MediaCardProps) {
+export function MediaCard({ media, currentUserId, isEventCreator, userRole }: MediaCardProps) {
   const pathname = usePathname()
   const [showComments, setShowComments] = useState(false)
   const [commentText, setCommentText] = useState("")
@@ -27,6 +28,7 @@ export function MediaCard({ media, currentUserId, isEventCreator }: MediaCardPro
   const hasFavorited = media.favorites?.some((fav: any) => fav.userId === currentUserId)
   
   const canDelete = currentUserId && (currentUserId === media.uploaderId || isEventCreator)
+  const canDownload = currentUserId && userRole !== "VIEWER"
 
   const handleLike = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -78,6 +80,34 @@ export function MediaCard({ media, currentUserId, isEventCreator }: MediaCardPro
   }
 
   const [showLightbox, setShowLightbox] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!canDownload) return toast.error("You don't have permission to download photos.")
+    
+    setIsDownloading(true)
+    try {
+      const response = await fetch(`/api/download?url=${encodeURIComponent(media.url)}`)
+      if (!response.ok) throw new Error("Download failed")
+      
+      const blob = await response.blob()
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = downloadUrl
+      a.download = `eventhive_${media.id}.jpg`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(downloadUrl)
+      document.body.removeChild(a)
+      toast.success("Download started!")
+    } catch (error) {
+      toast.error("Failed to download image.")
+    } finally {
+      setIsDownloading(false)
+    }
+  }
 
   return (
     <>
@@ -154,12 +184,25 @@ export function MediaCard({ media, currentUserId, isEventCreator }: MediaCardPro
             className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
             onClick={() => setShowLightbox(false)}
           >
-            <button 
-              className="absolute top-6 right-6 text-white/50 hover:text-white transition bg-white/5 p-2 rounded-full"
-              onClick={() => setShowLightbox(false)}
-            >
-              <X className="w-6 h-6" />
-            </button>
+            <div className="absolute top-6 right-6 flex items-center space-x-3 z-50">
+              {canDownload && (
+                <button 
+                  className="text-white/70 hover:text-white transition bg-white/10 hover:bg-white/20 p-2.5 rounded-full"
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  title="Download Image"
+                >
+                  <Download className={`w-6 h-6 ${isDownloading ? "animate-bounce" : ""}`} />
+                </button>
+              )}
+              <button 
+                className="text-white/70 hover:text-white transition bg-white/10 hover:bg-white/20 p-2.5 rounded-full"
+                onClick={() => setShowLightbox(false)}
+                title="Close"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}

@@ -25,6 +25,12 @@ async function main() {
       name: 'Member User',
       password,
       role: 'MEMBER' as const,
+    },
+    {
+      email: 'viewer@eventhive.com',
+      name: 'Viewer User',
+      password,
+      role: 'VIEWER' as const,
     }
   ]
 

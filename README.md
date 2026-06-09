@@ -32,3 +32,13 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the app!
+
+## Test Credentials 🔑
+Use the following pre-seeded dummy accounts to test role-based permissions:
+
+| Role | Email | Password | Permissions |
+|---|---|---|---|
+| **Admin** | `admin@eventhive.com` | `password123` | Full access, can delete events/photos, download all. |
+| **Photographer** | `photo@eventhive.com` | `password123` | Can upload photos, download photos. |
+| **Club Member** | `member@eventhive.com` | `password123` | Can view and download photos. |
+| **Viewer** | `viewer@eventhive.com` | `password123` | Can view photos. Cannot download. |
