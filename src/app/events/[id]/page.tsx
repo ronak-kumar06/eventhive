@@ -55,30 +55,41 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         {/* Event Header */}
-        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 bg-background/5 backdrop-blur-sm group">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-10" />
-          <img src={displayCover} className="w-full h-64 md:h-96 object-cover" alt={event.name} />
+        {/* Event Header */}
+        <div className="relative rounded-3xl overflow-hidden mb-12 border border-white/10 group min-h-[400px] md:min-h-[480px] flex items-center">
+          {/* Blurred Background */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <img src={displayCover} className="w-full h-full object-cover blur-[80px] scale-125 opacity-50" alt="" />
+            <div className="absolute inset-0 bg-[#050505]/50 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-[#050505]/80" />
+          </div>
 
-          {isCreatorOrAdmin && (
-            <div className="absolute top-6 right-6 z-20">
-              <EditCoverButton eventId={event.id} />
+          <div className="relative z-20 p-8 md:p-12 w-full flex flex-col md:flex-row items-center md:items-start gap-10">
+            {/* Sharp Image Container */}
+            <div className="relative w-full max-w-[280px] md:max-w-[320px] aspect-[4/5] rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] border border-white/20 shrink-0 group/cover transition-transform duration-500 hover:scale-[1.02]">
+              <img src={displayCover} className="w-full h-full object-cover" alt={event.name} />
+              
+              {isCreatorOrAdmin && (
+                <div className="absolute top-4 right-4 z-30 opacity-100 md:opacity-0 group-hover/cover:opacity-100 transition-opacity duration-300">
+                  <EditCoverButton eventId={event.id} />
+                </div>
+              )}
             </div>
-          )}
 
-          <div className="absolute bottom-0 left-0 p-8 z-20 w-full flex flex-col md:flex-row justify-between items-end">
-            <div>
-              <div className="flex items-center space-x-3 mb-3">
-                <span className="px-3 py-1 bg-background/10 backdrop-blur-md rounded-full text-xs font-medium border border-white/10">
+            {/* Event Info */}
+            <div className="flex-1 text-center md:text-left flex flex-col justify-center h-full pt-4 md:pt-8">
+              <div className="flex items-center justify-center md:justify-start space-x-3 mb-6">
+                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white tracking-widest border border-white/20 uppercase shadow-lg">
                   {event.category}
                 </span>
                 {event.isPublic ? (
-                  <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-medium border border-green-500/20">Public</span>
+                  <span className="px-4 py-1.5 bg-[#8FAD88]/20 text-[#8FAD88] rounded-full text-xs font-bold border border-[#8FAD88]/30 tracking-widest shadow-lg">PUBLIC</span>
                 ) : (
-                  <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-medium border border-red-500/20">Private</span>
+                  <span className="px-4 py-1.5 bg-red-500/20 text-red-400 rounded-full text-xs font-bold border border-red-500/30 tracking-widest shadow-lg">PRIVATE</span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">{event.name}</h1>
-              <p className="text-foreground max-w-2xl text-lg">{event.description}</p>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1] drop-shadow-2xl">{event.name}</h1>
+              <p className="text-white/80 max-w-2xl text-lg md:text-xl leading-relaxed drop-shadow-md font-medium">{event.description}</p>
             </div>
           </div>
         </div>
