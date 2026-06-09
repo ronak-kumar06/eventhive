@@ -58,13 +58,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <div className="min-h-screen pt-32 pb-12 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         {/* Event Header - Centered Circle Design */}
-        <div className="relative rounded-[2.5rem] overflow-hidden mb-12 border border-white/10 bg-background/5 backdrop-blur-xl p-8 md:p-16 flex flex-col items-center text-center shadow-2xl">
+        <div className="relative rounded-[2rem] overflow-hidden mb-8 border border-white/10 bg-background/5 backdrop-blur-xl p-6 md:p-10 flex flex-col items-center text-center shadow-2xl max-w-4xl mx-auto">
           
           {/* Subtle Ambient Background Gradient */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0" />
 
           {/* Circular Cover Photo */}
-          <div className="relative z-10 w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)] border-4 border-white/10 group/cover mb-8 transition-transform duration-500 hover:scale-105 bg-black/20 shrink-0">
+          <div className="relative z-10 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.08)] border-4 border-white/10 group/cover mb-6 transition-transform duration-500 hover:scale-105 bg-black/20 shrink-0">
             <img src={displayCover} className="w-full h-full object-cover" alt={event.name} />
             
             {isCreatorOrAdmin && (
@@ -75,20 +75,20 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
 
           {/* Event Info */}
-          <div className="relative z-10 w-full max-w-3xl flex flex-col items-center">
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold text-white tracking-widest border border-white/20 uppercase shadow-lg">
+          <div className="relative z-10 w-full max-w-2xl flex flex-col items-center">
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] md:text-xs font-bold text-white tracking-widest border border-white/20 uppercase shadow-md">
                 {event.category}
               </span>
               {event.isPublic ? (
-                <span className="px-4 py-1.5 bg-[#8FAD88]/20 text-[#8FAD88] rounded-full text-xs font-bold border border-[#8FAD88]/30 tracking-widest shadow-lg">PUBLIC</span>
+                <span className="px-3 py-1 bg-[#8FAD88]/20 text-[#8FAD88] rounded-full text-[10px] md:text-xs font-bold border border-[#8FAD88]/30 tracking-widest shadow-md">PUBLIC</span>
               ) : (
-                <span className="px-4 py-1.5 bg-red-500/20 text-red-400 rounded-full text-xs font-bold border border-red-500/30 tracking-widest shadow-lg">PRIVATE</span>
+                <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-[10px] md:text-xs font-bold border border-red-500/30 tracking-widest shadow-md">PRIVATE</span>
               )}
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1] drop-shadow-xl">{event.name}</h1>
-            <p className="text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">{event.description}</p>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight leading-tight drop-shadow-lg">{event.name}</h1>
+            <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl font-medium">{event.description}</p>
           </div>
         </div>
 
