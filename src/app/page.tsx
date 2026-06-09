@@ -3,8 +3,11 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useSession } from "next-auth/react"
 
 export default function Home() {
+  const { data: session } = useSession()
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
 
@@ -45,18 +48,20 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6"
+          className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 w-full"
         >
           <Link href="/events">
             <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full">
               Explore Events
             </Button>
           </Link>
-          <Link href="/login">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8 border-white/20 text-foreground hover:bg-background/10 rounded-full backdrop-blur-sm">
-              Sign In
-            </Button>
-          </Link>
+          {!session && (
+            <Link href="/login">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8 border-white/20 text-foreground hover:bg-background/10 rounded-full backdrop-blur-sm">
+                Sign In
+              </Button>
+            </Link>
+          )}
         </motion.div>
 
 
