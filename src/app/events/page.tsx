@@ -51,9 +51,7 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => {
-              const displayCover = (event.coverImage && event.coverImage.startsWith("http")) 
-                ? event.coverImage 
-                : getDefaultCover(event.id);
+              const displayCover = event.coverImage || getDefaultCover(event.id);
               
               return (
                 <Link key={event.id} href={`/events/${event.id}`}>
