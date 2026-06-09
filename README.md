@@ -11,7 +11,7 @@
 [![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://www.prisma.io/)
 [![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)
 
-![EventHive Banner](https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?q=80&w=1200&auto=format&fit=crop)
+[**View Live Demo**](https://web-5ntc18yk5-ronaks-projects-6caf0893.vercel.app)
 
 </div>
 
