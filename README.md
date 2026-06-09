@@ -28,9 +28,6 @@
 - [Environment Variables](#-environment-variables)
 - [API Overview](#-api-overview)
 - [Future Enhancements](#-future-enhancements)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Acknowledgements](#-acknowledgements)
 
 ---
 
@@ -278,31 +275,3 @@ AWS_S3_BUCKET_NAME="your_bucket_name"
 * **Analytics dashboard**: Show clubs how many times their photos were viewed or downloaded.
 * **Duplicate media detection**: Prevent the same photo from being uploaded twice.
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 🙏 Acknowledgements
-
-Special thanks to the tools and communities that made this possible:
-* [Next.js](https://nextjs.org/)
-* [Prisma ORM](https://www.prisma.io/)
-* [Tailwind CSS](https://tailwindcss.com/)
-* [face-api.js](https://github.com/vladmandic/face-api)
-* [AWS S3](https://aws.amazon.com/s3/)
